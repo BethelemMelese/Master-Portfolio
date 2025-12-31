@@ -6,9 +6,9 @@ import { ArrowRight } from "lucide-react";
 
 const Footer = () => {
   const socialLinks = [
-    { name: "LinkedIn", href: "#" },
-    { name: "Github", href: "#" },
-    { name: "Email", href: "mailto:" },
+    { name: "LinkedIn", href: "https://www.linkedin.com/in/betty-melese/" },
+    { name: "Github", href: "https://github.com/BethelemMelese" },
+    { name: "Email", href: "mailto:melesebety2673@gmail.com" },
     { name: "Blog", href: "#" },
   ];
 

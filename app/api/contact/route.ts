@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     const { data, error } = await resend.emails.send({
       from: 'Portfolio Contact Form <onboarding@resend.dev>', // You'll need to update this with your verified domain
       to: recipientEmail,
-      replyTo: email,
+      reply_to: email,
       subject: `New Contact Form Message from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
