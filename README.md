@@ -32,8 +32,8 @@ cp .env.example .env.local
 
 Fill in your Sanity project details:
 - `NEXT_PUBLIC_SANITY_PROJECT_ID`: Your Sanity project ID
-- `NEXT_PUBLIC_SANITY_DATASET`: Your dataset (usually "production")
-- `NEXT_PUBLIC_SANITY_API_VERSION`: API version (default: "2024-01-01")
+- `NEXT_PUBLIC_SANITY_DATASET`: Your dataset 
+- `NEXT_PUBLIC_SANITY_API_VERSION`: API version
 
 3. Initialize Sanity (if not done already):
 ```bash
