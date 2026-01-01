@@ -108,7 +108,7 @@ const HeroSection = () => {
         variants={itemVariants}
         className="mb-8 sm:mb-10 md:mb-12 mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-gray-400 font-light max-w-2xl leading-relaxed"
       >
-        I'm Betisha, a Software Designer based in San Francisco. I blend
+        I&apos;m Betisha, a Software Designer based in San Francisco. I blend
         aesthetic elegance with functional depth to build design systems and
         digital experiences that scale.
       </motion.p>

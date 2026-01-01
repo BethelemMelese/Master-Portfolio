@@ -284,7 +284,7 @@ const ContactContent = ({ contactData }: ContactContentProps) => {
                     className="flex items-center gap-2 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400"
                   >
                     <CheckCircle2 className="w-5 h-5" />
-                    <span>Message sent successfully! I'll get back to you soon.</span>
+                    <span>Message sent successfully! I&apos;ll get back to you soon.</span>
                   </motion.div>
                 )}
 
