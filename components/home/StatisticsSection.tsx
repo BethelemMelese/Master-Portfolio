@@ -163,7 +163,7 @@ const StatisticsSection = ({ resumeUrl, stats }: StatisticsSectionProps) => {
       </motion.div>
 
       {/* Download Resume Button */}
-      {resumeUrl && (
+      {/* {resumeUrl && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -180,7 +180,7 @@ const StatisticsSection = ({ resumeUrl, stats }: StatisticsSectionProps) => {
             <span>Download Resume</span>
           </Link>
         </motion.div>
-      )}
+      )} */}
     </div>
   )
 }
