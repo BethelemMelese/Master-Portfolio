@@ -34,6 +34,8 @@ Vercel is the easiest and most optimized platform for Next.js applications.
 
 #### Step 3: Configure Environment Variables
 
+**IMPORTANT:** Environment variables MUST be set before deployment, otherwise the build will fail.
+
 In your Vercel project dashboard:
 
 1. Go to **Settings** → **Environment Variables**
@@ -111,8 +113,24 @@ Create a `netlify.toml` file in your project root:
 
 #### Step 3: Configure Environment Variables
 
+**CRITICAL:** Environment variables MUST be configured in Netlify BEFORE deploying, otherwise the build will fail with "Missing environment variable" errors.
+
 1. Go to **Site settings** → **Environment variables**
-2. Add the same environment variables as listed in Vercel section above
+2. Add the following variables (same as Vercel):
+
+   **Required:**
+   ```
+   NEXT_PUBLIC_SANITY_PROJECT_ID=0p7jkymm
+   NEXT_PUBLIC_SANITY_DATASET=production
+   NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
+   RESEND_API_KEY=re_your_actual_resend_api_key
+   NEXT_PUBLIC_SITE_URL=https://your-site.netlify.app
+   ```
+
+   **Optional (for Sanity Studio write access):**
+   ```
+   SANITY_API_TOKEN=your_sanity_api_token
+   ```
 
 ---
 
