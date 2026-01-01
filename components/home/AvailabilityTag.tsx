@@ -2,7 +2,13 @@
 
 import { motion } from 'framer-motion'
 
-const AvailabilityTag = () => {
+interface AvailabilityTagProps {
+  availableForWork?: boolean
+}
+
+const AvailabilityTag = ({ availableForWork = true }: AvailabilityTagProps) => {
+  if (!availableForWork) return null
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8, y: -10, filter: 'blur(10px)' }}

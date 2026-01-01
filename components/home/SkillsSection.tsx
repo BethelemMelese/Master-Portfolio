@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Code, Server, Database, Settings, Target, Palette, LucideIcon } from 'lucide-react'
+import { Code, Server, Database, Settings, Target, Palette, Package, Network, LucideIcon } from 'lucide-react'
 import { useEffect, useState, useMemo } from 'react'
 import { client } from '@/lib/sanity/client'
 import { skillsQuery } from '@/lib/sanity/queries'
@@ -16,6 +16,8 @@ const getCategoryIcon = (category: string): LucideIcon => {
     devops: Settings,
     tools: Settings,
     design: Palette,
+    cms: Package,
+    state: Network,
     other: Target,
   }
   return iconMap[category] || Target
@@ -29,6 +31,8 @@ const getCategoryTitle = (category: string): string => {
     devops: 'DevOps & Tools',
     tools: 'Tools',
     design: 'Product Design',
+    cms: 'CMS & Platforms',
+    state: 'State Management',
     other: 'Soft Skills & Methods',
   }
   return titleMap[category] || category.charAt(0).toUpperCase() + category.slice(1)
@@ -67,7 +71,7 @@ const SkillsSection = () => {
   // Get sorted categories
   const categories = useMemo(() => {
     return Object.keys(groupedSkills).sort((a, b) => {
-      const order = ['design', 'frontend', 'backend', 'database', 'devops', 'tools', 'other']
+      const order = ['design', 'frontend', 'backend', 'database', 'devops', 'tools', 'cms', 'state', 'other']
       return (order.indexOf(a) === -1 ? 999 : order.indexOf(a)) - (order.indexOf(b) === -1 ? 999 : order.indexOf(b))
     })
   }, [groupedSkills])
@@ -194,7 +198,8 @@ const SkillsSection = () => {
             transition={{ duration: 0.8, delay: 0.5, ease: [0.6, -0.05, 0.01, 0.99] }}
             className="text-text-secondary text-lg md:text-xl max-w-3xl"
           >
-            A comprehensive breakdown of my technical toolkit, design methodologies, and the software I use to bring products to life from concept to deployment.
+            A focused overview of my technical skill set and the tools I use to design,
+            build, and maintain modern software solutions.
           </motion.p>
         </div>
 

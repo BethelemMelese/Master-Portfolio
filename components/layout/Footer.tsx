@@ -3,14 +3,60 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { client } from "@/lib/sanity/client";
+import { aboutQuery } from "@/lib/sanity/queries";
+import { SocialLink } from "@/types";
 
 const Footer = () => {
-  const socialLinks = [
-    { name: "LinkedIn", href: "https://www.linkedin.com/in/betty-melese/" },
-    { name: "Github", href: "https://github.com/BethelemMelese" },
-    { name: "Email", href: "mailto:melesebety2673@gmail.com" },
-    { name: "Blog", href: "#" },
-  ];
+  const currentYear = new Date().getFullYear();
+  const [socialLinks, setSocialLinks] = useState<Array<{ name: string; href: string }>>([]);
+
+  // Map platform value to display name
+  const getPlatformName = (platform: string): string => {
+    const nameMap: Record<string, string> = {
+      github: "Github",
+      linkedin: "LinkedIn",
+      twitter: "Twitter",
+      email: "Email",
+      other: "Other",
+    };
+    return nameMap[platform] || platform.charAt(0).toUpperCase() + platform.slice(1);
+  };
+
+  useEffect(() => {
+    const fetchSocialLinks = async () => {
+      try {
+        const aboutData = await client.fetch(aboutQuery);
+        if (aboutData?.socialLinks && Array.isArray(aboutData.socialLinks)) {
+          const links = aboutData.socialLinks
+            .filter((link: SocialLink) => link.url && link.platform)
+            .map((link: SocialLink) => ({
+              name: getPlatformName(link.platform),
+              href: link.url,
+            }));
+          setSocialLinks(links);
+        } else {
+          // Fallback to default links if no data from CMS
+          setSocialLinks([
+            { name: "LinkedIn", href: "https://www.linkedin.com/in/betty-melese/" },
+            { name: "Github", href: "https://github.com/BethelemMelese" },
+            { name: "Email", href: "mailto:melesebety2673@gmail.com" },
+          ]);
+        }
+      } catch (error) {
+        console.error("Error fetching social links:", error);
+        // Fallback to default links on error
+        setSocialLinks([
+          { name: "LinkedIn", href: "https://www.linkedin.com/in/betty-melese/" },
+          { name: "Github", href: "https://github.com/BethelemMelese" },
+          { name: "Email", href: "mailto:melesebety2673@gmail.com" },
+        ]);
+      }
+    };
+
+    fetchSocialLinks();
+  }, []);
 
   return (
     <motion.footer
@@ -28,7 +74,7 @@ const Footer = () => {
               transition={{ delay: 0.9 }}
               className="text-text-secondary text-xs sm:text-sm text-center sm:text-left"
             >
-              © 2025 Betisha. Crafted with precision.
+              © {currentYear} Betisha. Crafted with precision.
             </motion.p>
 
             {/* Social Links */}

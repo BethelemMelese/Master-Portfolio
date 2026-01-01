@@ -162,6 +162,10 @@ export const aboutQuery = `*[_type == "about"][0]{
     alt
   },
   location,
+  heroHeadingPrefix,
+  heroHeadingHighlight,
+  heroHeadingSuffix,
+  heroDescription,
   resumeUrl,
   linkedinUrl,
   workPrinciples[]{
@@ -174,7 +178,14 @@ export const aboutQuery = `*[_type == "about"][0]{
     items
   },
   availableForWork,
-  socialLinks
+  statistics[]{
+    value,
+    label
+  },
+  socialLinks[]{
+    platform,
+    url
+  }
 }`
 
 export const focusAreasQuery = `*[_type == "focusArea"] | order(order asc){

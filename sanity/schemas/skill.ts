@@ -23,6 +23,8 @@ export default defineType({
           { title: 'Database', value: 'database' },
           { title: 'DevOps', value: 'devops' },
           { title: 'Tools', value: 'tools' },
+          { title: 'CMS & Platforms', value: 'cms' },
+          { title: 'State Management', value: 'state' },
           { title: 'Other', value: 'other' },
         ],
       },

@@ -2,13 +2,16 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import { Download } from 'lucide-react'
 
 interface Stat {
   value: string
   label: string
 }
 
-const stats: Stat[] = [
+// Default stats as fallback
+const defaultStats: Stat[] = [
   { value: '7+', label: 'Years Exp.' },
   { value: '50+', label: 'Projects' },
   { value: '12', label: 'Awards' },
@@ -110,45 +113,75 @@ const Counter = ({
   )
 }
 
-const StatisticsSection = () => {
+interface StatisticsSectionProps {
+  resumeUrl?: string
+  stats?: Stat[]
+}
+
+const StatisticsSection = ({ resumeUrl, stats }: StatisticsSectionProps) => {
+  // Use provided stats or fallback to default
+  const displayStats = stats && stats.length > 0 ? stats : defaultStats
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      transition={{ duration: 0.8, delay: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }}
-      className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 mt-8 sm:mt-10 md:mt-12 lg:mt-16"
-    >
-      {stats.map((stat, index) => (
-        <motion.div
-          key={stat.label}
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ 
-            delay: 0.9 + index * 0.12,
-            duration: 0.6,
-            ease: [0.6, -0.05, 0.01, 0.99]
-          }}
-          whileHover={{ 
-            scale: 1.05,
-            transition: { duration: 0.3, ease: 'easeOut' }
-          }}
-          className="text-center"
-        >
-          <Counter value={stat.value} delay={index * 0.12} />
-          <motion.div 
-            className="text-text-secondary text-xs sm:text-sm uppercase tracking-wider"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+    <div>
+      <motion.div
+        initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        transition={{ duration: 0.8, delay: 0.8, ease: [0.6, -0.05, 0.01, 0.99] }}
+        className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 mt-8 sm:mt-10 md:mt-12 lg:mt-16"
+      >
+        {displayStats.map((stat, index) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ 
-              delay: 1.1 + index * 0.12,
-              duration: 0.4
+              delay: 0.9 + index * 0.12,
+              duration: 0.6,
+              ease: [0.6, -0.05, 0.01, 0.99]
             }}
+            whileHover={{ 
+              scale: 1.05,
+              transition: { duration: 0.3, ease: 'easeOut' }
+            }}
+            className="text-center"
           >
-            {stat.label}
+            <Counter value={stat.value} delay={index * 0.12} />
+            <motion.div 
+              className="text-text-secondary text-xs sm:text-sm uppercase tracking-wider"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ 
+                delay: 1.1 + index * 0.12,
+                duration: 0.4
+              }}
+            >
+              {stat.label}
+            </motion.div>
           </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Download Resume Button */}
+      {resumeUrl && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.3, ease: [0.6, -0.05, 0.01, 0.99] }}
+          className="mt-8 sm:mt-10 md:mt-12"
+        >
+          <Link
+            href={resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-card border border-accent rounded-lg text-white hover:bg-white/5 hover:border-accent/50 transition-all duration-300"
+          >
+            <Download className="w-5 h-5" />
+            <span>Download Resume</span>
+          </Link>
         </motion.div>
-      ))}
-    </motion.div>
+      )}
+    </div>
   )
 }
 

@@ -35,7 +35,7 @@ export interface Skill {
   _id: string
   _type: 'skill'
   name: string
-  category: 'frontend' | 'backend' | 'database' | 'devops' | 'tools' | 'design' | 'other'
+  category: 'frontend' | 'backend' | 'database' | 'devops' | 'tools' | 'design' | 'cms' | 'state' | 'other'
   order: number
   icon?: {
     asset: {

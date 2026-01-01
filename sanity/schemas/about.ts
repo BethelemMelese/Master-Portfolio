@@ -46,6 +46,31 @@ export default defineType({
       description: 'e.g., "San Francisco, CA"',
     }),
     defineField({
+      name: 'heroHeadingPrefix',
+      title: 'Hero Heading Prefix',
+      type: 'string',
+      description: 'First part of the hero heading (e.g., "Crafting")',
+    }),
+    defineField({
+      name: 'heroHeadingHighlight',
+      title: 'Hero Heading Highlight',
+      type: 'string',
+      description: 'Highlighted word in the hero heading (e.g., "Intuitive")',
+    }),
+    defineField({
+      name: 'heroHeadingSuffix',
+      title: 'Hero Heading Suffix',
+      type: 'string',
+      description: 'Last part of the hero heading (e.g., "Digital Future.")',
+    }),
+    defineField({
+      name: 'heroDescription',
+      title: 'Hero Description',
+      type: 'text',
+      description: 'Description text below the hero heading',
+      rows: 3,
+    }),
+    defineField({
       name: 'resumeUrl',
       title: 'Resume URL',
       type: 'url',
@@ -123,6 +148,33 @@ export default defineType({
       type: 'boolean',
       description: 'Show "Open to new opportunities" badge',
       initialValue: true,
+    }),
+    defineField({
+      name: 'statistics',
+      title: 'Statistics',
+      type: 'array',
+      description: 'Statistics to display on the homepage (e.g., Years of Experience, Projects, Awards)',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'value',
+              title: 'Value',
+              type: 'string',
+              description: 'The statistic value (e.g., "7+", "50+", "12")',
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              description: 'The statistic label (e.g., "Years Exp.", "Projects", "Awards")',
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'socialLinks',

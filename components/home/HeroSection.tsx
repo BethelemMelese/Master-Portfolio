@@ -2,11 +2,25 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown,ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AvailabilityTag from "./AvailabilityTag";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  heroHeadingPrefix?: string
+  heroHeadingHighlight?: string
+  heroHeadingSuffix?: string
+  heroDescription?: string
+  availableForWork?: boolean
+}
+
+const HeroSection = ({
+  heroHeadingPrefix = "Crafting",
+  heroHeadingHighlight = "Intuitive",
+  heroHeadingSuffix = "Digital Future.",
+  heroDescription = "I'm Betisha, a Software Designer based in San Francisco. I blend aesthetic elegance with functional depth to build design systems and digital experiences that scale.",
+  availableForWork = true
+}: HeroSectionProps) => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -40,7 +54,7 @@ const HeroSection = () => {
     >
       {/* Availability Tag */}
       <motion.div variants={itemVariants} className="mb-6">
-        <AvailabilityTag />
+        <AvailabilityTag availableForWork={availableForWork} />
       </motion.div>
 
       {/* Main Heading */}
@@ -58,7 +72,7 @@ const HeroSection = () => {
             ease: [0.6, -0.05, 0.01, 0.99],
           }}
         >
-          Crafting <br />
+          {heroHeadingPrefix} <br />
         </motion.span>
         <motion.span
           className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-red-400"
@@ -86,7 +100,7 @@ const HeroSection = () => {
             textShadow: { duration: 3, repeat: Infinity, delay: 1 },
           }}
         >
-          Intuitive
+          {heroHeadingHighlight}
         </motion.span>
         <motion.span
           className="text-white inline-block"
@@ -99,7 +113,7 @@ const HeroSection = () => {
           }}
         >
           {" "}
-          Digital Future.
+          {heroHeadingSuffix}
         </motion.span>
       </motion.h1>
 
@@ -108,9 +122,7 @@ const HeroSection = () => {
         variants={itemVariants}
         className="mb-8 sm:mb-10 md:mb-12 mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-gray-400 font-light max-w-2xl leading-relaxed"
       >
-        I&apos;m Betisha, a Software Designer based in San Francisco. I blend
-        aesthetic elegance with functional depth to build design systems and
-        digital experiences that scale.
+        {heroDescription}
       </motion.p>
 
       {/* CTA Buttons */}

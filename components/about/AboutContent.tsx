@@ -106,7 +106,7 @@ const AboutContent = ({ aboutData, imageUrl = '/portrait.jpg' }: AboutContentPro
 
   return (
     <section className="py-8 sm:py-8 md:py-10 px-4 sm:px-4 lg:px-6 xl:px-8">
-      <div className="container mx-auto max-w-8xl">
+      <div className="container mx-auto max-w-7xl">
         <div className="grid lg:grid-cols-10 gap-8 sm:gap-8 md:gap-12 lg:gap-16">
           {/* Left Column - Main Content */}
           <div className="lg:col-span-6">
