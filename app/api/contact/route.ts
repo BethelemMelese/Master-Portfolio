@@ -3,6 +3,10 @@ import { NextResponse } from 'next/server'
 import { client } from '@/lib/sanity/client'
 import { contactQuery } from '@/lib/sanity/queries'
 
+// Mark this route as dynamic to prevent build-time execution
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 const resendApiKey = process.env.RESEND_API_KEY
 const resend = resendApiKey ? new Resend(resendApiKey) : null
 
