@@ -316,7 +316,7 @@ const AboutContent = ({ aboutData, imageUrl = '/portrait.jpg' }: AboutContentPro
                               animate={techInView ? "visible" : "hidden"}
                               variants={fadeInUp}
                               transition={{ duration: 0.3, delay: (index * 0.1) + (itemIndex * 0.05), ease: "easeOut" }}
-                              className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-white bg-accent/20  border border-white/10 rounded-md sm:rounded-lg hover:border-accent/50 transition-colors duration-200"
+                              className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-white bg-accent/20 border border-white/10 rounded-md sm:rounded-lg hover:border-accent/50 transition-colors duration-200"
                             >
                               {item}
                             </motion.span>

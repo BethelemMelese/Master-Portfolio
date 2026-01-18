@@ -20,13 +20,37 @@ function initializeClient(): SanityClient {
   })
 }
 
-// Lazy initialization using Proxy
+function getClient(): SanityClient {
+  if (!_client) {
+    _client = initializeClient()
+  }
+  return _client
+}
+
+// Lazy initialization using Proxy - works for both server and client components
 export const client = new Proxy({} as SanityClient, {
   get(_target, prop) {
-    if (!_client) {
-      _client = initializeClient()
+    const actualClient = getClient()
+    const value = (actualClient as any)[prop]
+    if (typeof value === 'function') {
+      return value.bind(actualClient)
     }
-    const value = (_client as any)[prop]
-    return typeof value === 'function' ? value.bind(_client) : value
+    return value
+  },
+  has(_target, prop) {
+    const actualClient = getClient()
+    return prop in actualClient
+  },
+  ownKeys(_target) {
+    const actualClient = getClient()
+    return Object.keys(actualClient)
+  },
+  getOwnPropertyDescriptor(_target, prop) {
+    const actualClient = getClient()
+    const descriptor = Object.getOwnPropertyDescriptor(actualClient, prop)
+    return descriptor || {
+      enumerable: true,
+      configurable: true,
+    }
   },
 })

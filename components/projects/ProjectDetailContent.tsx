@@ -33,6 +33,23 @@ interface ProjectDetailContentProps {
   } | null;
 }
 
+// Icon mapping helper
+const getIconComponent = (iconName?: string) => {
+  const iconMap: Record<string, React.ReactNode> = {
+    Fingerprint: <Fingerprint className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+    PieChart: <PieChart className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+    ArrowLeftRight: <ArrowLeftRight className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+    Moon: <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+    Shield: <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+    Zap: <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+    Users: <Users className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+    Target: <Target className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+    Globe: <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+    Check: <Check className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />,
+  }
+  return iconMap[iconName || ''] || <Check className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
+}
+
 const ProjectDetailContent = ({
   project,
   thumbnailUrl,
@@ -241,8 +258,7 @@ const ProjectDetailContent = ({
               The Problem
             </h3>
             <p className="text-text-secondary leading-relaxed">
-              High user abandonment during onboarding and a cluttered interface
-              that alienated target demographics.
+              {project.problem || 'High user abandonment during onboarding and a cluttered interface that alienated target demographics.'}
             </p>
           </motion.div>
 
@@ -259,8 +275,7 @@ const ProjectDetailContent = ({
               Target Audience
             </h3>
             <p className="text-text-secondary leading-relaxed">
-              Gen Z and young millennials who expect speed, transparency, and
-              modern aesthetic.
+              {project.targetAudience || 'Gen Z and young millennials who expect speed, transparency, and modern aesthetic.'}
             </p>
           </motion.div>
 
@@ -277,8 +292,7 @@ const ProjectDetailContent = ({
               The Goal
             </h3>
             <p className="text-text-secondary leading-relaxed">
-              Create a frictionless onboarding experience and a trustworthy,
-              scalable design system.
+              {project.goal || 'Create a frictionless onboarding experience and a trustworthy, scalable design system.'}
             </p>
           </motion.div>
         </motion.div>
@@ -313,69 +327,90 @@ const ProjectDetailContent = ({
             </div>
 
             {/* Right: Process - Two Columns */}
-            <div>
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Left Column */}
-                <div className="space-y-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-3 h-3 text-white" />
+            {project.process && project.process.length > 0 ? (
+              <div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {project.process.map((step, index) => (
+                    <div key={index} className="space-y-6">
+                      <div className="flex items-start gap-3">
+                        <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-3 h-3 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold mb-1">
+                            {step.title}
+                          </h4>
+                          <p className="text-text-secondary text-sm leading-relaxed">
+                            {step.description}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="text-white font-semibold mb-1">
-                        User Research
-                      </h4>
-                      <p className="text-text-secondary text-sm leading-relaxed">
-                        Conducted user interviews and analyzed drop-off data.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-3 h-3 text-white" />
-                    </div>
-                    <div>
-                      <h4 className="text-white font-semibold mb-1">
-                        UI Design
-                      </h4>
-                      <p className="text-text-secondary text-sm leading-relaxed">
-                        Created high-fidelity mockups and interaction patterns.
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-
-                {/* Right Column */}
-                <div className="space-y-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-3 h-3 text-white" />
+              </div>
+            ) : (
+              <div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">
+                          User Research
+                        </h4>
+                        <p className="text-text-secondary text-sm leading-relaxed">
+                          Conducted user interviews and analyzed drop-off data.
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="text-white font-semibold mb-1">
-                        UX Strategy
-                      </h4>
-                      <p className="text-text-secondary text-sm leading-relaxed">
-                        Defined information architecture and user flows.
-                      </p>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">
+                          UI Design
+                        </h4>
+                        <p className="text-text-secondary text-sm leading-relaxed">
+                          Created high-fidelity mockups and interaction patterns.
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-3 h-3 text-white" />
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">
+                          UX Strategy
+                        </h4>
+                        <p className="text-text-secondary text-sm leading-relaxed">
+                          Defined information architecture and user flows.
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="text-white font-semibold mb-1">
-                        Prototyping
-                      </h4>
-                      <p className="text-text-secondary text-sm leading-relaxed">
-                        Built interactive prototypes for usability testing.
-                      </p>
+                    <div className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">
+                          Prototyping
+                        </h4>
+                        <p className="text-text-secondary text-sm leading-relaxed">
+                          Built interactive prototypes for usability testing.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </motion.div>
 
@@ -426,53 +461,64 @@ const ProjectDetailContent = ({
                   className="h-0.5 bg-accent mb-6 sm:mb-8 md:mb-12"
                 ></motion.div>
                 <div className="space-y-3 sm:space-y-4">
-                  {/* Feature 1: Biometric Login & Security */}
-                  <motion.div
-                    variants={fadeInLeft}
-                    whileHover={{ x: 5 }}
-                    className="flex items-center gap-3 bg-background/50 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 border border-white/10 cursor-pointer transition-colors duration-300 hover:border-accent/30"
-                  >
-                    <Fingerprint className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
-                    <span className="text-white font-medium text-sm sm:text-base">
-                      Biometric Login & Security
-                    </span>
-                  </motion.div>
-
-                  {/* Feature 2: Real-time Spending Analytics */}
-                  <motion.div
-                    variants={fadeInLeft}
-                    whileHover={{ x: 5 }}
-                    className="flex items-center gap-3 bg-background/50 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 border border-white/10 cursor-pointer transition-colors duration-300 hover:border-accent/30"
-                  >
-                    <PieChart className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
-                    <span className="text-white font-medium text-sm sm:text-base">
-                      Real-time Spending Analytics
-                    </span>
-                  </motion.div>
-
-                  {/* Feature 3: One-tap Peer Transfers */}
-                  <motion.div
-                    variants={fadeInLeft}
-                    whileHover={{ x: 5 }}
-                    className="flex items-center gap-3 bg-background/50 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 border border-white/10 cursor-pointer transition-colors duration-300 hover:border-accent/30"
-                  >
-                    <ArrowLeftRight className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
-                    <span className="text-white font-medium text-sm sm:text-base">
-                      One-tap Peer Transfers
-                    </span>
-                  </motion.div>
-
-                  {/* Feature 4: Adaptive Dark Mode UI */}
-                  <motion.div
-                    variants={fadeInLeft}
-                    whileHover={{ x: 5 }}
-                    className="flex items-center gap-3 bg-background/50 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 border border-white/10 cursor-pointer transition-colors duration-300 hover:border-accent/30"
-                  >
-                    <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
-                    <span className="text-white font-medium text-sm sm:text-base">
-                      Adaptive Dark Mode UI
-                    </span>
-                  </motion.div>
+                  {project.keyFeatures && project.keyFeatures.length > 0 ? (
+                    project.keyFeatures.map((feature, index) => (
+                      <motion.div
+                        key={index}
+                        variants={fadeInLeft}
+                        whileHover={{ x: 5 }}
+                        className="flex items-center gap-3 bg-background/50 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 border border-white/10 cursor-pointer transition-colors duration-300 hover:border-accent/30"
+                      >
+                        {getIconComponent(feature.icon)}
+                        <span className="text-white font-medium text-sm sm:text-base">
+                          {feature.name}
+                        </span>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <>
+                      <motion.div
+                        variants={fadeInLeft}
+                        whileHover={{ x: 5 }}
+                        className="flex items-center gap-3 bg-background/50 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 border border-white/10 cursor-pointer transition-colors duration-300 hover:border-accent/30"
+                      >
+                        <Fingerprint className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
+                        <span className="text-white font-medium text-sm sm:text-base">
+                          Biometric Login & Security
+                        </span>
+                      </motion.div>
+                      <motion.div
+                        variants={fadeInLeft}
+                        whileHover={{ x: 5 }}
+                        className="flex items-center gap-3 bg-background/50 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 border border-white/10 cursor-pointer transition-colors duration-300 hover:border-accent/30"
+                      >
+                        <PieChart className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
+                        <span className="text-white font-medium text-sm sm:text-base">
+                          Real-time Spending Analytics
+                        </span>
+                      </motion.div>
+                      <motion.div
+                        variants={fadeInLeft}
+                        whileHover={{ x: 5 }}
+                        className="flex items-center gap-3 bg-background/50 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 border border-white/10 cursor-pointer transition-colors duration-300 hover:border-accent/30"
+                      >
+                        <ArrowLeftRight className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
+                        <span className="text-white font-medium text-sm sm:text-base">
+                          One-tap Peer Transfers
+                        </span>
+                      </motion.div>
+                      <motion.div
+                        variants={fadeInLeft}
+                        whileHover={{ x: 5 }}
+                        className="flex items-center gap-3 bg-background/50 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 border border-white/10 cursor-pointer transition-colors duration-300 hover:border-accent/30"
+                      >
+                        <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
+                        <span className="text-white font-medium text-sm sm:text-base">
+                          Adaptive Dark Mode UI
+                        </span>
+                      </motion.div>
+                    </>
+                  )}
                 </div>
               </motion.div>
 
@@ -591,77 +637,68 @@ const ProjectDetailContent = ({
 
 
         {/* Project Impact Section */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-          transition={{ duration: 0.6 }}
-          className="grid md:grid-cols-3 gap-6 mb-16 md:mb-24"
-        >
-          <div className="bg-card rounded-lg border border-white/10 p-8 text-center">
-            <div className="text-accent text-5xl md:text-6xl font-bold mb-4">
-              20%
-            </div>
-            <p className="text-white text-lg font-semibold mb-2">
-              Retention Uplift
-            </p>
-            <p className="text-text-secondary text-sm">
-              Post-launch 3 month average
-            </p>
-          </div>
-          <div className="bg-card rounded-lg border border-white/10 p-8 text-center">
-            <div className="text-accent text-5xl md:text-6xl font-bold mb-4">
-              1.5m
-            </div>
-            <p className="text-white text-lg font-semibold mb-2">
-              Active Users
-            </p>
-            <p className="text-text-secondary text-sm">Successfully migrated</p>
-          </div>
-          <div className="bg-card rounded-lg border border-white/10 p-8 text-center">
-            <div className="text-accent text-5xl md:text-6xl font-bold mb-4">
-              4.8
-            </div>
-            <p className="text-white text-lg font-semibold mb-2">
-              App Store Rating
-            </p>
-            <p className="text-text-secondary text-sm">Up from 3.2 stars</p>
-          </div>
-        </motion.div>
+        {project.impactMetrics && project.impactMetrics.length > 0 ? (
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeInUp}
+            transition={{ duration: 0.6 }}
+            className="grid md:grid-cols-3 gap-6 mb-16 md:mb-24"
+          >
+            {project.impactMetrics.map((metric, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                className="bg-card rounded-lg border border-white/10 p-6 sm:p-8 text-center"
+              >
+                <div className="text-accent text-4xl sm:text-5xl md:text-6xl font-bold mb-3 sm:mb-4">
+                  {metric.value}
+                </div>
+                <p className="text-white text-base sm:text-lg font-semibold mb-2">
+                  {metric.label}
+                </p>
+                {metric.description && (
+                  <p className="text-text-secondary text-sm">
+                    {metric.description}
+                  </p>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+        ) : null}
 
         {/* What I Learned Section */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-          className="mb-12 sm:mb-16 md:mb-24"
-        >
-          <motion.h3
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-accent text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-8"
-          >
-            What I Learned
-          </motion.h3>
+        {project.learnings && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="max-w-4xl"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeInUp}
+            className="mb-12 sm:mb-16 md:mb-24"
           >
-            <p className="text-text-secondary text-base sm:text-lg md:text-xl leading-relaxed">
-              This project taught me that security and user experience
-              don&apos;t have to be opposing forces. By leveraging modern design
-              principles and breaking down complex workflows, we can create
-              experiences that feel as simple as social media apps.
-            </p>
+            <motion.h3
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-accent text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-8"
+            >
+              What I Learned
+            </motion.h3>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="max-w-4xl"
+            >
+              <p className="text-text-secondary text-base sm:text-lg md:text-xl leading-relaxed">
+                {project.learnings}
+              </p>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        )}
 
         {/* Next Project Section */}
         {nextProject && (

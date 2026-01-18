@@ -38,7 +38,24 @@ export const projectQuery = `*[_type == "project" && slug.current == $slug][0]{
   featured,
   order,
   completedDate,
-  tags
+  tags,
+  problem,
+  targetAudience,
+  goal,
+  process[]{
+    title,
+    description
+  },
+  keyFeatures[]{
+    name,
+    icon
+  },
+  impactMetrics[]{
+    value,
+    label,
+    description
+  },
+  learnings
 }`
 
 export const projectsQuery = `*[_type == "project"] | order(order asc, completedDate desc){

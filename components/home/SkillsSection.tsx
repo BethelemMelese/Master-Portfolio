@@ -46,20 +46,33 @@ const SkillsSection = () => {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
+        setLoading(true)
         const data = await client.fetch<Skill[]>(skillsQuery)
+        
+        if (!data || data.length === 0) {
+          console.warn('No skills data returned from Sanity')
+          setLoading(false)
+          return
+        }
+        
         setSkills(data)
         
         // Group skills by category
         const grouped: Record<string, Skill[]> = {}
         data.forEach((skill) => {
-          if (!grouped[skill.category]) {
-            grouped[skill.category] = []
+          if (skill && skill.category) {
+            if (!grouped[skill.category]) {
+              grouped[skill.category] = []
+            }
+            grouped[skill.category].push(skill)
           }
-          grouped[skill.category].push(skill)
         })
         setGroupedSkills(grouped)
       } catch (error) {
         console.error('Error fetching skills:', error)
+        if (error instanceof Error) {
+          console.error('Error details:', error.message)
+        }
       } finally {
         setLoading(false)
       }
@@ -83,15 +96,29 @@ const SkillsSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="bg-card rounded-lg border border-white/10 p-6 animate-pulse">
-                <div className="w-12 h-12 bg-white/5 rounded mb-4" />
-                <div className="h-6 bg-white/5 rounded mb-4" />
+                <div className="w-12 h-12 bg-white/5bg-gray-300/10 rounded mb-4" />
+                <div className="h-6 bg-white/5bg-gray-300/10 rounded mb-4" />
                 <div className="flex flex-wrap gap-2">
                   {[...Array(3)].map((_, j) => (
-                    <div key={j} className="h-6 w-20 bg-white/5 rounded-full" />
+                    <div key={j} className="h-6 w-20 bg-white/5bg-gray-300/10 rounded-full" />
                   ))}
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (skills.length === 0 || Object.keys(groupedSkills).length === 0) {
+    return (
+      <section className="pt-8 md:pt-12 pb-16 md:pb-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <p className="text-text-secondary text-lg">
+              No skills data available. Please add skills in Sanity Studio.
+            </p>
           </div>
         </div>
       </section>
@@ -103,7 +130,7 @@ const SkillsSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-text-primary-light mb-3 sm:mb-4">
             <motion.span
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -196,7 +223,7 @@ const SkillsSection = () => {
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.6, -0.05, 0.01, 0.99] }}
-            className="text-text-secondary text-lg md:text-xl max-w-3xl"
+            className="text-text-secondary-light text-lg md:text-xl max-w-3xl"
           >
             A focused overview of my technical skill set and the tools I use to design,
             build, and maintain modern software solutions.
@@ -231,15 +258,24 @@ const SkillsSection = () => {
                 {/* Icon */}
                 <motion.div 
                   className="text-accent mb-4"
-                  whileHover={{ rotate: 360, scale: 1.1 }}
-                  transition={{ duration: 0.5 }}
+                  whileHover={{ 
+                    rotate: 15, 
+                    scale: 1.15,
+                    y: -2
+                  }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17,
+                    duration: 0.2
+                  }}
                 >
                   <IconComponent className="w-6 h-6" />
                 </motion.div>
 
                 {/* Title */}
                 <motion.h3 
-                  className="text-white font-bold text-xl mb-4 group-hover:text-accent transition-colors duration-300"
+                  className="text-whitetext-text-primary-light font-bold text-xl mb-4 group-hover:text-accent transition-colors duration-300"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
@@ -268,7 +304,7 @@ const SkillsSection = () => {
                         backgroundColor: 'rgba(143, 6, 6, 0.2)',
                         borderColor: '#8f0606'
                       }}
-                      className="px-3 py-1 text-sm text-white border border-accent rounded-full bg-transparent hover:bg-accent/10 transition-all duration-200 cursor-default"
+                      className="px-3 py-1 text-sm text-whitetext-text-primary-light border border-accent rounded-full bg-transparentbg-accent/10 hover:bg-accent/10hover:bg-accent/20 transition-all duration-200 cursor-default"
                     >
                       {skill.name}
                     </motion.span>

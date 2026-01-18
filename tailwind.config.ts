@@ -10,12 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         background: '#0d0d0d',
+        'background-light': '#f5f5f5',
         card: '#151515',
+        'card-light': '#ffffff',
         accent: '#8f0606',
-        text: {
-          primary: '#ffffff',
-          secondary: '#a0a0a0',
-        },
+        'text-primary': '#ffffff',
+        'text-primary-light': '#0d0d0d',
+        'text-secondary': '#a0a0a0',
+        'text-secondary-light': '#666666',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

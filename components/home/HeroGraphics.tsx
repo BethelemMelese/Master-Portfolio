@@ -110,11 +110,11 @@ const HeroGraphics = () => {
             >
               Design System
             </motion.h3>
-            <p className="text-text-secondary text-xs sm:text-sm">Consistent & Scalable</p>
+            <p className="text-text-secondarytext-text-secondary-light text-xs sm:text-sm">Consistent & Scalable</p>
           </motion.div>
 
           {/* Progress Bar */}
-          <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+          <div className="w-full h-1 bg-gray-800bg-gray-300 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: '66.67%' }}

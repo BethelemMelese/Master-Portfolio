@@ -5,10 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ChevronDown, Sun } from 'lucide-react'
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false)
   const pathname = usePathname()
 
   const navItems = [
@@ -23,7 +24,7 @@ const Header = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/50 backdrop-blur-sm border-b border-background/50"
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md"
     >
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-14 sm:h-16 md:h-20">
@@ -41,62 +42,106 @@ const Header = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation - Right Side */}
-          <nav className="hidden md:flex items-center gap-3 md:gap-4 lg:gap-6">
-            {navItems.map((item, index) => {
-              const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
-              return (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + index * 0.1, ease: 'easeOut' }}
-                  className="relative"
-                >
-                  <Link
-                    href={item.href}
-                    className={`relative inline-block text-xs md:text-sm lg:text-base font-medium uppercase tracking-wide transition-colors duration-300 ${
-                      isActive ? 'text-white' : 'text-gray-300 hover:text-white'
-                    }`}
-                  >
-                    {item.name}
-                    {/* Animated underline for active state */}
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeIndicator"
-                        initial={false}
-                        transition={{
-                          type: 'spring',
-                          stiffness: 380,
-                          damping: 30,
-                        }}
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent origin-left"
-                        style={{
-                          boxShadow: '0 0 8px rgba(143, 6, 6, 0.6)',
-                        }}
-                      />
-                    )}
-                  </Link>
-                </motion.div>
-              )
-            })}
-
-          {/* Contact Button */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-                className="inline-flex items-center justify-center h-8 md:h-9 lg:h-10 px-3 md:px-4 lg:px-6 rounded-md bg-accent hover:bg-accent/90 border-0 text-white text-xs md:text-sm font-medium uppercase tracking-wide transition-all hover:scale-105 active:scale-95"
+          {/* Desktop Navigation - Centered */}
+          <nav className="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, ease: 'easeOut' }}
+              className="flex items-center gap-1 px-2 py-1.5 bg-card rounded-lg"
             >
-              <Link href="/contact">Contact</Link>
-            </Button>
-          </motion.div>
+              {navItems.map((item, index) => {
+                const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
+                return (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1 + index * 0.05, ease: 'easeOut' }}
+                    className="relative"
+                  >
+                    <Link
+                      href={item.href}
+                      className={`relative inline-block px-3 py-1.5 text-xs md:text-sm font-medium transition-colors duration-300 ${
+                        isActive ? 'text-white' : 'text-gray-300 hover:text-white'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                )
+              })}
+            </motion.div>
           </nav>
+
+          {/* Right Side Actions */}
+          <div className="hidden md:flex items-center gap-2 z-10">
+            {/* Language Selector */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="relative"
+            >
+              <button
+                onClick={() => setIsLanguageOpen(!isLanguageOpen)}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-card rounded-lg text-gray-300 hover:text-white transition-colors text-xs md:text-sm font-medium"
+              >
+                English
+                <ChevronDown className="w-3 h-3" />
+              </button>
+              <AnimatePresence>
+                {isLanguageOpen && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-40"
+                      onClick={() => setIsLanguageOpen(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute top-full mt-2 right-0 bg-card rounded-lg shadow-lg border border-white/10 z-50 min-w-[120px]"
+                    >
+                      <button className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">
+                        English
+                      </button>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Theme Toggle */}
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.35 }}
+              className="w-8 h-8 flex items-center justify-center bg-card rounded-full text-gray-300 hover:text-white transition-colors"
+              aria-label="Toggle theme"
+            >
+              <Sun className="w-4 h-4" />
+            </motion.button>
+
+            {/* Contact Us Button */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+                className="inline-flex items-center justify-center h-8 md:h-9 px-3 md:px-4 rounded-lg bg-card hover:bg-card/80 border-0 text-gray-300 hover:text-white text-xs md:text-sm font-medium transition-colors"
+              >
+                <Link href="/contact">Contact Us</Link>
+              </Button>
+            </motion.div>
+          </div>
 
           {/* Mobile Menu Button */}
           <motion.button
@@ -184,7 +229,7 @@ const Header = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: navItems.length * 0.1 }}
-                  className="pt-3 sm:pt-4 flex justify-center"
+                  className="pt-3 sm:pt-4 flex items-center justify-center gap-3"
                 >
                   <Button
                     variant="outline"

@@ -56,11 +56,11 @@ const HeroSection = ({
       <motion.div variants={itemVariants} className="mb-6">
         <AvailabilityTag availableForWork={availableForWork} />
       </motion.div>
-
+    
       {/* Main Heading */}
       <motion.h1
         variants={itemVariants}
-        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-[0.95] text-white"
+        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight leading-[0.95] text-white"
       >
         <motion.span
           className="text-white inline-block"

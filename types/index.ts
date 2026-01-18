@@ -29,6 +29,23 @@ export interface Project {
   order: number
   completedDate?: string
   tags?: string[]
+  problem?: string
+  targetAudience?: string
+  goal?: string
+  process?: Array<{
+    title: string
+    description: string
+  }>
+  keyFeatures?: Array<{
+    name: string
+    icon?: string
+  }>
+  impactMetrics?: Array<{
+    value: string
+    label: string
+    description?: string
+  }>
+  learnings?: string
 }
 
 export interface Skill {

@@ -5,11 +5,14 @@
 @layer base {
   body {
     @apply text-text-primary;
-    font-family: system-ui, -apple-system, sans-serif;
-    /* background: linear-gradient(135deg, #8f0606 0%, #000000 60%); */
+    font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #2d0404 0%, #000 60%);
     background-attachment: fixed;
     min-height: 100vh;
+  }
+  
+  p {
+    font-family: 'Inter', sans-serif;
   }
 }
 
