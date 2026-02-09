@@ -518,7 +518,7 @@ const ExperienceSection = () => {
               What I&apos;m Focused On Now
             </h3>
             
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
               {focusAreas.map((area, index) => (
                 <motion.div
                   key={area.title}

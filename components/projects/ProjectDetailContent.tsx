@@ -230,7 +230,7 @@ const ProjectDetailContent = ({
                 src={thumbnailUrl}
                 alt={project.title}
                 fill
-                className="object-cover"
+                className="object-contain"
                 priority
               />
             </motion.div>
@@ -540,7 +540,7 @@ const ProjectDetailContent = ({
                       src={imageUrls[0]}
                       alt={`${project.title} - Feature showcase`}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                   </motion.div>
                 </motion.div>
@@ -725,7 +725,7 @@ const ProjectDetailContent = ({
                       src={nextProject.thumbnailUrl}
                       alt={nextProject.title}
                       fill
-                      className="object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-300"
+                      className="object-contain opacity-50 group-hover:opacity-70 transition-opacity duration-300"
                     />
                   </motion.div>
                 )}

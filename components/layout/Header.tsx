@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ChevronDown, Sun } from 'lucide-react'
+import { Menu, X, ChevronDown } from 'lucide-react'
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -114,17 +114,6 @@ const Header = () => {
                 )}
               </AnimatePresence>
             </motion.div>
-
-            {/* Theme Toggle */}
-            <motion.button
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.35 }}
-              className="w-8 h-8 flex items-center justify-center bg-card rounded-full text-gray-300 hover:text-white transition-colors"
-              aria-label="Toggle theme"
-            >
-              <Sun className="w-4 h-4" />
-            </motion.button>
 
             {/* Contact Us Button */}
             <motion.div

@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 
 interface Project {
@@ -118,7 +117,7 @@ const ProjectsContent = ({ projects }: ProjectsContentProps) => {
                 },
               },
             }}
-            className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8"
+            className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8"
           >
             {projects.map((project, index) => (
               <motion.div
@@ -132,19 +131,12 @@ const ProjectsContent = ({ projects }: ProjectsContentProps) => {
               >
                 {/* Thumbnail */}
                 {project.thumbnailUrl && (
-                  <div className="w-full h-40 xs:h-48 sm:h-56 md:h-64 relative overflow-hidden bg-gray-800">
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.4, ease: 'easeOut' }}
-                      className="w-full h-full"
-                    >
-                      <Image
-                        src={project.thumbnailUrl}
-                        alt={project.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </motion.div>
+                  <div className="w-full h-40 xs:h-48 sm:h-56 md:h-64 flex items-center justify-center overflow-hidden bg-gray-800 p-1">
+                    <img
+                      src={project.thumbnailUrl}
+                      alt={project.title}
+                      className="max-w-full max-h-full w-auto h-auto object-contain"
+                    />
                   </div>
                 )}
 
