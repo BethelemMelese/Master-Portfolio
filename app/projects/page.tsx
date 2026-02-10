@@ -22,7 +22,7 @@ export default async function Projects() {
       try {
         const imageBuilder = urlFor(project.thumbnail)
         if (imageBuilder) {
-          thumbnailUrl = imageBuilder.width(800).height(600).fit('crop').url() || project.thumbnail.asset.url
+          thumbnailUrl = imageBuilder.url() || project.thumbnail.asset.url
         } else {
           thumbnailUrl = project.thumbnail.asset.url
         }

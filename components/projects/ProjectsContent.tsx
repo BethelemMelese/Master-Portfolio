@@ -131,11 +131,11 @@ const ProjectsContent = ({ projects }: ProjectsContentProps) => {
               >
                 {/* Thumbnail */}
                 {project.thumbnailUrl && (
-                  <div className="w-full h-40 xs:h-48 sm:h-56 md:h-64 flex items-center justify-center overflow-hidden bg-gray-800 p-1">
+                  <div className="w-full min-w-0 aspect-video flex items-center justify-center overflow-hidden bg-gray-800">
                     <img
                       src={project.thumbnailUrl}
                       alt={project.title}
-                      className="max-w-full max-h-full w-auto h-auto object-contain"
+                      className="max-w-full max-h-full w-auto h-auto min-w-0 min-h-0 object-contain"
                     />
                   </div>
                 )}

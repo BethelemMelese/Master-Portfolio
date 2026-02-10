@@ -71,6 +71,7 @@ export default defineType({
       name: 'images',
       title: 'Project Images',
       type: 'array',
+      initialValue: [],
       of: [
         {
           type: 'image',

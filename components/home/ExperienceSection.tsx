@@ -478,7 +478,7 @@ const ExperienceSection = () => {
               )}
 
               {/* Technologies - More prominent */}
-              {exp.skills.length > 0 && (
+              {/* {exp.skills.length > 0 && (
                 <div className="pt-4 border-t border-white/5">
                   <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
                     Technologies & Tools
@@ -499,7 +499,7 @@ const ExperienceSection = () => {
                     ))}
                   </div>
                 </div>
-              )}
+              )} */}
             </motion.div>
           ))}
           </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -31,6 +32,11 @@ interface ProjectDetailContentProps {
     title: string;
     thumbnailUrl?: string;
   } | null;
+  prevProject?: {
+    slug: string;
+    title: string;
+    thumbnailUrl?: string;
+  } | null;
 }
 
 // Icon mapping helper
@@ -55,7 +61,11 @@ const ProjectDetailContent = ({
   thumbnailUrl,
   imageUrls = [],
   nextProject,
+  prevProject,
 }: ProjectDetailContentProps) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+
   if (!project) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -122,6 +132,37 @@ const ProjectDetailContent = ({
         ease: [0.6, -0.05, 0.01, 0.99],
       },
     },
+  };
+
+  const galleryImages =
+    imageUrls.length > 0
+      ? imageUrls
+      : thumbnailUrl
+      ? [thumbnailUrl]
+      : [];
+
+  const handlePrevImage = () => {
+    if (galleryImages.length === 0) return;
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? galleryImages.length - 1 : prev - 1
+    );
+  };
+
+  const handleNextImage = () => {
+    if (galleryImages.length === 0) return;
+    setCurrentImageIndex((prev) =>
+      prev === galleryImages.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const openImageModal = (index: number) => {
+    if (galleryImages.length === 0) return;
+    setCurrentImageIndex(index);
+    setIsImageModalOpen(true);
+  };
+
+  const closeImageModal = () => {
+    setIsImageModalOpen(false);
   };
 
   return (
@@ -212,8 +253,8 @@ const ProjectDetailContent = ({
           </motion.div>
         </motion.div>
 
-        {/* Hero Image/Mockup Section - Single Image */}
-        {thumbnailUrl && (
+        {/* Hero Image/Mockup Section - Static first image with preview */}
+        {galleryImages.length > 0 && (
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -223,11 +264,13 @@ const ProjectDetailContent = ({
           >
             <motion.div
               whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-lg overflow-hidden bg-gray-800"
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden bg-gray-800 cursor-pointer"
+              onClick={() => openImageModal(0)}
             >
               <Image
-                src={thumbnailUrl}
+                key={galleryImages[0]}
+                src={galleryImages[0]}
                 alt={project.title}
                 fill
                 className="object-contain"
@@ -522,14 +565,15 @@ const ProjectDetailContent = ({
                 </div>
               </motion.div>
 
-              {/* Right: Feature Visual - Regular Image */}
-              {imageUrls.length > 0 && (
+            {/* Right: Feature Visual - Slider + preview */}
+              {galleryImages.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.3 }}
-                  className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden bg-gray-800"
+                  className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden bg-gray-800 cursor-pointer"
+                  onClick={() => openImageModal(currentImageIndex)}
                 >
                   <motion.div
                     whileHover={{ scale: 1.05 }}
@@ -537,12 +581,61 @@ const ProjectDetailContent = ({
                     className="w-full h-full"
                   >
                     <Image
-                      src={imageUrls[0]}
+                      key={galleryImages[currentImageIndex]}
+                      src={galleryImages[currentImageIndex]}
                       alt={`${project.title} - Feature showcase`}
                       fill
                       className="object-contain"
                     />
                   </motion.div>
+
+                  {galleryImages.length > 1 && (
+                    <>
+                      {/* Navigation Arrows */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePrevImage();
+                        }}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+                        aria-label="Previous image"
+                      >
+                        <ArrowRight className="h-4 w-4 rotate-180" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNextImage();
+                        }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+                        aria-label="Next image"
+                      >
+                        <ArrowRight className="h-4 w-4" />
+                      </button>
+
+                      {/* Dots Indicator */}
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                        {galleryImages.map((_, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentImageIndex(index);
+                            }}
+                            className={`h-2.5 w-2.5 rounded-full border border-white/40 transition-all ${
+                              index === currentImageIndex
+                                ? "bg-white"
+                                : "bg-white/20 hover:bg-white/40"
+                            }`}
+                            aria-label={`Go to image ${index + 1}`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </motion.div>
               )}
             </div>
@@ -700,62 +793,196 @@ const ProjectDetailContent = ({
           </motion.div>
         )}
 
-        {/* Next Project Section */}
-        {nextProject && (
+        {/* Project Navigation Section: Previous / Next + Back to Gallery */}
+        {(prevProject || nextProject) && (
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            variants={scaleIn}
-            className="relative"
+            variants={fadeInUp}
+            transition={{ duration: 0.6 }}
+            className="mb-10 md:mb-16"
           >
-            <Link href={`/projects/${nextProject.slug}`}>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-                className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden bg-card border border-white/10 hover:border-accent/50 transition-all duration-300 group cursor-pointer"
-              >
-                {nextProject.thumbnailUrl && (
+            <div className="flex flex-col items-center text-center mb-6 sm:mb-8">
+              <span className="text-accent text-xs sm:text-sm font-semibold uppercase tracking-[0.2em]">
+                Keep Exploring
+              </span>
+              <h3 className="mt-2 text-xl sm:text-2xl md:text-3xl font-bold text-white">
+                Navigate Between Case Studies
+              </h3>
+            </div>
+
+            {/* Previous / Next cards */}
+            <div
+              className={`grid gap-4 md:gap-6 ${
+                prevProject && nextProject ? "md:grid-cols-2" : "md:grid-cols-1"
+              }`}
+            >
+              {/* Previous Project Card */}
+              {prevProject && (
+                <Link href={`/projects/${prevProject.slug}`}>
                   <motion.div
-                    className="absolute inset-0"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <Image
-                      src={nextProject.thumbnailUrl}
-                      alt={nextProject.title}
-                      fill
-                      className="object-contain opacity-50 group-hover:opacity-70 transition-opacity duration-300"
-                    />
-                  </motion.div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-6 sm:p-8 md:p-12">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    whileHover={{ y: -6, scale: 1.03 }}
+                    className="relative w-full h-[170px] sm:h-[210px] md:h-[240px] rounded-2xl overflow-hidden bg-gradient-to-br from-white/5 via-card to-black/40 border border-white/10 hover:border-accent/60 hover:shadow-[0_0_40px_rgba(244,114,182,0.35)] transition-all duration-300 group cursor-pointer backdrop-blur-md"
                   >
-                    <div>
-                      <h3 className="text-accent text-xl sm:text-2xl md:text-3xl font-bold mb-2 uppercase tracking-wide">
+                    {prevProject.thumbnailUrl && (
+                      <motion.div
+                        className="absolute inset-0"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        <Image
+                          src={prevProject.thumbnailUrl}
+                          alt={prevProject.title}
+                          fill
+                          className="object-contain opacity-35 group-hover:opacity-55 transition-opacity duration-300"
+                        />
+                      </motion.div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-transparent flex flex-col justify-center p-4 sm:p-5">
+                      <p className="flex items-center gap-1 text-text-secondary text-xs sm:text-sm mb-1 uppercase tracking-wide">
+                        <ArrowRight className="w-3 h-3 rotate-180 text-accent" />
+                        Previous Project
+                      </p>
+                      <h4 className="text-white text-lg sm:text-xl font-semibold line-clamp-2">
+                        {prevProject.title}
+                      </h4>
+                    </div>
+                  </motion.div>
+                </Link>
+              )}
+
+              {/* Next Project Card */}
+              {nextProject && (
+                <Link href={`/projects/${nextProject.slug}`}>
+                  <motion.div
+                    initial={{ opacity: 0, x: 40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    whileHover={{ y: -6, scale: 1.03 }}
+                    className="relative w-full h-[170px] sm:h-[210px] md:h-[240px] rounded-2xl overflow-hidden bg-gradient-to-bl from-white/5 via-card to-black/40 border border-white/10 hover:border-accent/60 hover:shadow-[0_0_40px_rgba(244,114,182,0.35)] transition-all duration-300 group cursor-pointer backdrop-blur-md"
+                  >
+                    {nextProject.thumbnailUrl && (
+                      <motion.div
+                        className="absolute inset-0"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        <Image
+                          src={nextProject.thumbnailUrl}
+                          alt={nextProject.title}
+                          fill
+                          className="object-contain opacity-35 group-hover:opacity-55 transition-opacity duration-300"
+                        />
+                      </motion.div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-l from-black/85 via-black/60 to-transparent flex flex-col justify-center items-end p-4 sm:p-5 text-right">
+                      <p className="flex items-center justify-end gap-1 text-text-secondary text-xs sm:text-sm mb-1 uppercase tracking-wide">
                         Next Project
-                      </h3>
-                      <h4 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
+                        <ArrowRight className="w-3 h-3 text-accent" />
+                      </p>
+                      <h4 className="text-white text-lg sm:text-xl font-semibold line-clamp-2">
                         {nextProject.title}
                       </h4>
                     </div>
-                    <motion.div
-                      whileHover={{ scale: 1.1, rotate: -5 }}
-                      className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center group-hover:bg-accent transition-colors duration-300"
-                    >
-                      <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 text-black group-hover:text-white transition-colors duration-300" />
-                    </motion.div>
                   </motion.div>
-                </div>
-              </motion.div>
-            </Link>
+                </Link>
+              )}
+            </div>
+
+            {/* Compact Back to Gallery button */}
+            <div className="mt-6 flex justify-center">
+              <Link href="/projects">
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="inline-flex items-center gap-2 rounded-full border border-accent/60 bg-accent/10 px-5 sm:px-6 py-2.5 text-sm sm:text-base font-medium text-white shadow-[0_0_20px_rgba(244,114,182,0.35)] hover:bg-accent/20 transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4 rotate-180" />
+                  <span>Back to project gallery</span>
+                </motion.button>
+              </Link>
+            </div>
           </motion.div>
+        )}
+
+        {/* Fullscreen Image Modal */}
+        {isImageModalOpen && galleryImages.length > 0 && (
+          <div
+            className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center px-4 py-8"
+            onClick={closeImageModal}
+          >
+            <div
+              className="relative w-full max-w-5xl h-[60vh] sm:h-[70vh] md:h-[80vh] rounded-lg overflow-hidden bg-black"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                key={`modal-${galleryImages[currentImageIndex]}`}
+                src={galleryImages[currentImageIndex]}
+                alt={project.title}
+                fill
+                className="object-contain"
+                priority
+              />
+
+              {/* Close button */}
+              <button
+                type="button"
+                onClick={closeImageModal}
+                className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white hover:bg-black/90 transition-colors text-xl leading-none"
+                aria-label="Close image preview"
+              >
+                ×
+              </button>
+
+              {/* Navigation arrows inside modal */}
+              {galleryImages.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={handlePrevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors"
+                    aria-label="Previous image"
+                  >
+                    <ArrowRight className="h-5 w-5 rotate-180" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleNextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors"
+                    aria-label="Next image"
+                  >
+                    <ArrowRight className="h-5 w-5" />
+                  </button>
+                </>
+              )}
+
+              {/* Dots indicator */}
+              {galleryImages.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                  {galleryImages.map((_, index) => (
+                    <button
+                      key={`modal-dot-${index}`}
+                      type="button"
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`h-2.5 w-2.5 rounded-full border border-white/50 transition-all ${
+                        index === currentImageIndex
+                          ? "bg-white"
+                          : "bg-white/20 hover:bg-white/40"
+                      }`}
+                      aria-label={`Go to image ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         )}
       </div>
     </div>

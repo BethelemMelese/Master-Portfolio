@@ -31,7 +31,7 @@ export default async function ProjectDetail({
     try {
       const imageBuilder = urlFor(project.thumbnail)
       if (imageBuilder) {
-        thumbnailUrl = imageBuilder.width(1200).height(800).fit('crop').url() || project.thumbnail.asset.url
+        thumbnailUrl = imageBuilder.url() || project.thumbnail.asset.url
       } else {
         thumbnailUrl = project.thumbnail.asset.url
       }
@@ -49,7 +49,7 @@ export default async function ProjectDetail({
         try {
           const imageBuilder = urlFor(img)
           if (imageBuilder) {
-            const url = imageBuilder.width(1200).height(800).fit('crop').url() || img.asset.url
+            const url = imageBuilder.url() || img.asset.url
             if (url) imageUrls.push(url)
           } else {
             if (img.asset.url) imageUrls.push(img.asset.url)
@@ -62,30 +62,57 @@ export default async function ProjectDetail({
     })
   }
 
-  // Fetch next project
+  // Fetch previous & next projects
   let nextProject = null
+  let prevProject = null
   try {
     const allProjects = await client.fetch(projectsQuery)
     const currentIndex = allProjects.findIndex((p: any) => p._id === project._id)
-    if (currentIndex !== -1 && currentIndex < allProjects.length - 1) {
-      const next = allProjects[currentIndex + 1]
-      let nextThumbnailUrl: string | undefined
-      if (next?.thumbnail?.asset) {
-        try {
-          const imageBuilder = urlFor(next.thumbnail)
-          if (imageBuilder) {
-            nextThumbnailUrl = imageBuilder.width(800).height(600).fit('crop').url() || next.thumbnail.asset.url
-          } else {
-            nextThumbnailUrl = next.thumbnail.asset.url
+    if (currentIndex !== -1) {
+      // Next project (if exists)
+      if (currentIndex < allProjects.length - 1) {
+        const next = allProjects[currentIndex + 1]
+        let nextThumbnailUrl: string | undefined
+        if (next?.thumbnail?.asset) {
+          try {
+            const imageBuilder = urlFor(next.thumbnail)
+            if (imageBuilder) {
+              nextThumbnailUrl = imageBuilder.url() || next.thumbnail.asset.url
+            } else {
+              nextThumbnailUrl = next.thumbnail.asset.url
+            }
+          } catch (error) {
+            nextThumbnailUrl = next.thumbnail?.asset?.url
           }
-        } catch (error) {
-          nextThumbnailUrl = next.thumbnail?.asset?.url
+        }
+        nextProject = {
+          slug: next.slug.current,
+          title: next.title,
+          thumbnailUrl: nextThumbnailUrl,
         }
       }
-      nextProject = {
-        slug: next.slug.current,
-        title: next.title,
-        thumbnailUrl: nextThumbnailUrl
+
+      // Previous project (if exists)
+      if (currentIndex > 0) {
+        const prev = allProjects[currentIndex - 1]
+        let prevThumbnailUrl: string | undefined
+        if (prev?.thumbnail?.asset) {
+          try {
+            const imageBuilder = urlFor(prev.thumbnail)
+            if (imageBuilder) {
+              prevThumbnailUrl = imageBuilder.url() || prev.thumbnail.asset.url
+            } else {
+              prevThumbnailUrl = prev.thumbnail.asset.url
+            }
+          } catch (error) {
+            prevThumbnailUrl = prev.thumbnail?.asset?.url
+          }
+        }
+        prevProject = {
+          slug: prev.slug.current,
+          title: prev.title,
+          thumbnailUrl: prevThumbnailUrl,
+        }
       }
     }
   } catch (error) {
@@ -99,6 +126,7 @@ export default async function ProjectDetail({
         thumbnailUrl={thumbnailUrl}
         imageUrls={imageUrls}
         nextProject={nextProject}
+        prevProject={prevProject}
       />
     </main>
   )
