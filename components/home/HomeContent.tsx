@@ -5,11 +5,21 @@ import HeroSection from '@/components/home/HeroSection'
 import StatisticsSection from '@/components/home/StatisticsSection'
 import HeroGraphics from '@/components/home/HeroGraphics'
 import SkillsSection from '@/components/home/SkillsSection'
+import FeaturedProjectsSection from '@/components/home/FeaturedProjectsSection'
 import ExperienceSection from '@/components/home/ExperienceSection'
 
 interface Stat {
   value: string
   label: string
+}
+
+interface FeaturedProject {
+  _id: string
+  title: string
+  slug: { current: string }
+  shortDescription: string
+  tags?: string[]
+  thumbnailUrl?: string
 }
 
 interface HomeContentProps {
@@ -20,6 +30,7 @@ interface HomeContentProps {
   heroDescription?: string
   availableForWork?: boolean
   statistics?: Stat[]
+  featuredProjects?: FeaturedProject[]
 }
 
 export default function HomeContent({
@@ -29,7 +40,8 @@ export default function HomeContent({
   heroHeadingSuffix,
   heroDescription,
   availableForWork,
-  statistics
+  statistics,
+  featuredProjects = []
 }: HomeContentProps) {
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -78,6 +90,23 @@ export default function HomeContent({
 
       {/* Skills Section */}
       <SkillsSection />
+
+      {/* Gradient Divider Line */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: [0.6, -0.05, 0.01, 0.99] }}
+          className="h-px w-full origin-left"
+          style={{
+            background: 'linear-gradient(135deg, #8f0606 0%, #000000 60%)',
+          }}
+        />
+      </div>
+
+      {/* Featured Projects Section */}
+      <FeaturedProjectsSection projects={featuredProjects} />
 
       {/* Gradient Divider Line */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

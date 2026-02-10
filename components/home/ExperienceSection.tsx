@@ -282,7 +282,7 @@ const ExperienceSection = () => {
   }, []);
 
   // Calculate vertical line position so it aligns cleanly with first & last dots
-  useEffect(() => {
+  const updateLineStyle = () => {
     if (!timelineRef.current || experiences.length === 0) return;
 
     const firstCard = cardRefs.current[0];
@@ -302,6 +302,23 @@ const ExperienceSection = () => {
     const height = Math.max(bottom - top, 100);
 
     setLineStyle({ top, height });
+  };
+
+  useEffect(() => {
+    updateLineStyle();
+  }, [experiences.length]);
+
+  // Recalculate line on resize for responsive layout
+  useEffect(() => {
+    if (experiences.length === 0) return;
+    const ro = new ResizeObserver(() => updateLineStyle());
+    if (timelineRef.current) ro.observe(timelineRef.current);
+    const onResize = () => updateLineStyle();
+    window.addEventListener("resize", onResize);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", onResize);
+    };
   }, [experiences.length]);
 
   if (loading) {
@@ -353,8 +370,8 @@ const ExperienceSection = () => {
   }
 
   return (
-    <section className="pt-6 sm:pt-8 md:pt-12 pb-12 sm:pb-16 md:pb-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="pt-6 sm:pt-8 md:pt-12 pb-12 sm:pb-16 md:pb-24 overflow-x-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -398,7 +415,7 @@ const ExperienceSection = () => {
         {/* Experience Cards - Clean Vertical Layout with Path */}
         <div
           ref={timelineRef}
-          className="relative right-4 pl-10 md:pl-20 lg:pl-24 ml-auto max-w-5xl"
+          className="relative w-full max-w-5xl mx-auto md:right-4 md:ml-auto md:mr-4 pl-[10rem] sm:pl-28 md:pl-20 lg:pl-24 min-w-0"
         >
           {/* Vertical Path Line - aligned to first & last experience dots */}
           {lineStyle && (
@@ -433,7 +450,7 @@ const ExperienceSection = () => {
             </div>
           )}
 
-          <div className="flex flex-col space-y-8 md:space-y-10 max-w-5xl">
+          <div className="flex flex-col space-y-6 sm:space-y-8 md:space-y-10 max-w-5xl">
             {experiences.map((exp, index) => (
               <motion.div
                 key={`${exp.title}-${index}`}
@@ -449,7 +466,7 @@ const ExperienceSection = () => {
                   ease: [0.6, -0.05, 0.01, 0.99],
                 }}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="group bg-card rounded-xl mr-10 border border-white/10 p-6 md:p-8 hover:border-accent/50 transition-all duration-300 relative"
+                className="group bg-card rounded-xl mr-2 sm:mr-4 md:mr-10 border border-white/10 p-4 sm:p-6 md:p-8 hover:border-accent/50 transition-all duration-300 relative min-w-0"
               >
                 {/* Path Dot with Date - side by side block */}
                 <motion.div
@@ -462,7 +479,7 @@ const ExperienceSection = () => {
                     type: "spring",
                     stiffness: 200,
                   }}
-                  className="absolute -left-20 md:-left-20 lg:-left-[22.5%] top-10 z-10 flex flex-row items-center gap-4"
+                  className="absolute -left-16 sm:-left-18 md:-left-20 lg:-left-[22.5%] top-8 sm:top-10 z-10 flex flex-row items-center gap-2 sm:gap-4"
                 >
                   {/* Date text beside dot */}
                   <motion.span
@@ -470,13 +487,13 @@ const ExperienceSection = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 + 0.5 }}
-                    className="text-accent w-[85px] text-xs font-medium whitespace-nowrap"
+                    className="text-accent w-[72px] sm:w-[85px] text-[11px] sm:text-xs font-medium whitespace-nowrap"
                   >
                     {exp.dates}
                   </motion.span>
                   {/* Main dot */}
                   <div
-                    className="relative flex-shrink-0 w-5 h-5 bg-accent rounded-full border-4 border-background shadow-lg"
+                    className="relative flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 bg-accent rounded-full border-2 sm:border-4 border-background shadow-lg"
                     style={{
                       boxShadow:
                         "0 0 12px rgba(143, 6, 6, 0.8), 0 0 24px rgba(143, 6, 6, 0.4)",
@@ -491,16 +508,16 @@ const ExperienceSection = () => {
                 <div className="absolute left-0 top-0 bottom-0 w-5 bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-l-xl" />
 
                 {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-6">
-                  <div className="flex-1">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
+                  <div className="flex-1 min-w-0">
                     {/* Role and Company */}
-                    <div className="flex items-start gap-3 mb-2">
-                      <div className="mt-1.5 text-accent">{exp.icon}</div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-xl md:text-2xl mb-1.5 leading-tight">
+                    <div className="flex items-start gap-2 sm:gap-3 mb-2">
+                      <div className="mt-1 sm:mt-1.5 text-accent flex-shrink-0">{exp.icon}</div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-white font-bold text-lg sm:text-xl md:text-2xl mb-1 sm:mb-1.5 leading-tight break-words">
                           {exp.title}
                         </h3>
-                        <p className="text-accent font-medium text-base md:text-lg">
+                        <p className="text-accent font-medium text-sm sm:text-base md:text-lg break-words">
                           {exp.company}
                         </p>
                       </div>
@@ -510,8 +527,8 @@ const ExperienceSection = () => {
 
                 {/* Description - Cleaner bullet points */}
                 {exp.description.length > 0 && (
-                  <div className="mb-6 pl-2">
-                    <ul className="space-y-3">
+                  <div className="mb-4 sm:mb-6 pl-1 sm:pl-2">
+                    <ul className="space-y-2 sm:space-y-3">
                       {exp.description.map((item, itemIndex) => (
                         <motion.li
                           key={itemIndex}
@@ -519,7 +536,7 @@ const ExperienceSection = () => {
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ delay: index * 0.1 + itemIndex * 0.05 }}
-                          className="flex items-start gap-3 text-text-secondary text-[15px] leading-relaxed"
+                          className="flex items-start gap-2 sm:gap-3 text-text-secondary text-[13px] sm:text-[15px] leading-relaxed"
                         >
                           <span className="text-accent mt-2 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-accent" />
                           <span className="flex-1">{item}</span>
@@ -570,7 +587,7 @@ const ExperienceSection = () => {
               What I&apos;m Focused On Now
             </h3>
 
-            <div className="grid sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {focusAreas.map((area, index) => (
                 <motion.div
                   key={area.title}

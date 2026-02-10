@@ -16,6 +16,7 @@ const Header = () => {
     { name: 'Home', href: '/' },
     { name: 'Projects', href: '/projects' },
     { name: 'About', href: '/about' },
+    { name: 'Services', href: '/services' },
     // { name: 'Contact', href: '/contact' },
   ]
 
@@ -160,7 +161,7 @@ const Header = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 transition-all duration-300 ease-in-out bg-black/60 backdrop-blur-sm z-40 md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             
@@ -170,9 +171,9 @@ const Header = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
-              className="fixed top-14 sm:top-16 right-0 bottom-0 w-[280px] sm:w-64 bg-[#0a0a0a] backdrop-blur-md border-l border-white/10 z-40 md:hidden shadow-2xl"
+              className="fixed top-14 sm:top-16 right-0 bottom-0 w-[280px] sm:w-64 bg-black/60 border-l border-white/10 md:hidden shadow-2xl"
             >
-              <nav className="flex flex-col p-4 sm:p-6 gap-3 sm:gap-4">
+              <nav className="flex flex-col p-4 sm:p-6 gap-3 z-40 sm:gap-4">
                 {navItems.map((item, index) => {
                   const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
                   return (
@@ -188,7 +189,7 @@ const Header = () => {
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={`relative inline-block text-sm sm:text-base font-medium uppercase tracking-wide transition-all duration-300 py-2 sm:py-2.5 px-4 rounded-lg ${
                           isActive 
-                            ? 'text-white bg-accent/20 border border-accent/50' 
+                            ? 'text-white bg-accent/50 backdrop-blur-sm border border-accent/50' 
                             : 'text-gray-300 hover:text-white hover:bg-white/5'
                         }`}
                       >
