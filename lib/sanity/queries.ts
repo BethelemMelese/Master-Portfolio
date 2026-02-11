@@ -225,3 +225,52 @@ export const contactQuery = `*[_type == "contact"][0]{
   heading,
   description
 }`
+
+export const servicesQuery = `*[_type == "services"][0]{
+  _id,
+  _type,
+  heroTitlePrefix,
+  heroTitleHighlight,
+  heroSubtitle,
+  servicesList[]{
+    icon,
+    title,
+    description,
+    items
+  },
+  whySectionTitle,
+  whyPoints[]{
+    title,
+    description
+  },
+  whyImage{
+    asset->{
+      _id,
+      url,
+      metadata{
+        dimensions{
+          width,
+          height
+        }
+      }
+    },
+    alt
+  },
+  whyImageAlt,
+  experienceBadgeValue,
+  experienceBadgeLabel,
+  processTitle,
+  processSubtitle,
+  processSteps[]{
+    number,
+    title,
+    description
+  },
+  ctaHeadingMain,
+  ctaHeadingHighlight,
+  ctaSubtitle,
+  ctaPrimaryText,
+  ctaPrimaryLink,
+  ctaSecondaryText,
+  ctaSecondaryLink
+}`

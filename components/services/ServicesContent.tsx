@@ -10,8 +10,68 @@ import {
   Building2,
   Gauge,
   Users,
+  type LucideIcon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+
+// Types for CMS data
+export interface ServicesData {
+  heroTitlePrefix?: string | null
+  heroTitleHighlight?: string | null
+  heroSubtitle?: string | null
+  servicesList?: Array<{
+    icon?: string | null
+    title?: string | null
+    description?: string | null
+    items?: string[] | null
+  }> | null
+  whySectionTitle?: string | null
+  whyPoints?: Array<{ title?: string | null; description?: string | null }> | null
+  experienceBadgeValue?: string | null
+  experienceBadgeLabel?: string | null
+  processTitle?: string | null
+  processSubtitle?: string | null
+  processSteps?: Array<{
+    number?: string | null
+    title?: string | null
+    description?: string | null
+  }> | null
+  ctaHeadingMain?: string | null
+  ctaHeadingHighlight?: string | null
+  ctaSubtitle?: string | null
+  ctaPrimaryText?: string | null
+  ctaPrimaryLink?: string | null
+  ctaSecondaryText?: string | null
+  ctaSecondaryLink?: string | null
+}
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  Code2,
+  MousePointer2,
+  Building2,
+  Gauge,
+  Users,
+}
+
+// Default content when CMS has no data
+const DEFAULT_SERVICES = [
+  { icon: 'Code2', title: 'Full-Stack Web Development', description: 'Building scalable, robust, and lightning-fast web applications from architecture to deployment.', items: ['Scalable React & Next.js Architectures', 'Node.js & Python Backend API Systems', 'Modern Database Design & Integration'] },
+  { icon: 'MousePointer2', title: 'UI/UX & System Design', description: 'Creating consistent visual languages that improve user engagement and development speed.', items: ['Comprehensive Design Systems in Figma', 'User Journey Mapping & Prototyping', 'Accessibility-First Visual Design'] },
+  { icon: 'Building2', title: 'Business & Enterprise', description: 'Simplifying complex data workflows and internal tools for high-efficiency operations.', items: ['Custom ERP & CRM Dashboards', 'Internal Tooling & Workflow Automation', 'Data Visualization & Reporting'] },
+  { icon: 'Gauge', title: 'Performance & Code Quality', description: 'Optimizing existing applications for speed, security, and maintainability.', items: ['Web Vitals Optimization & SEO', 'Codebase Refactoring & Security Audits', 'CI/CD Pipelines & DevOps Setup'] },
+  { icon: 'Users', title: 'Consulting & Leadership', description: 'Guiding engineering teams and founders through technical hurdles and product strategy.', items: ['Product Roadmap & Technical Strategy', 'Tech-Stack Selection & Architecture Advice', 'Dev-Team Mentorship & Process Design'] },
+]
+const DEFAULT_PROCESS_STEPS = [
+  { number: '01', title: 'Discovery', description: 'In-depth research and goal alignment to define project scope.' },
+  { number: '02', title: 'Strategy', description: 'Architecting solutions and mapping out the user journey.' },
+  { number: '03', title: 'Development', description: 'Design execution and high-performance coding phase.' },
+  { number: '04', title: 'Iteration', description: 'Continuous feedback loops and post-launch refinement.' },
+]
+const DEFAULT_WHY_POINTS = [
+  { title: 'Design-to-Code Efficiency', description: 'Zero communication loss. I translate designs into pixel-perfect code myself, reducing overhead.' },
+  { title: 'Product-First Thinking', description: "I don't just build features; I focus on your business goals and user needs from day one." },
+  { title: 'Modern Tech Stack', description: 'Leveraging the latest stable technologies to ensure your product is future-proof and performant.' },
+]
 
 // Shared animation variants
 const fadeUp = {
@@ -29,106 +89,57 @@ const fadeInRight = {
 const transition = { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
 const transitionFast = { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
 
-const services = [
-  {
-    icon: Code2,
-    title: 'Full-Stack Web Development',
-    description:
-      'Building scalable, robust, and lightning-fast web applications from architecture to deployment.',
-    items: [
-      'Scalable React & Next.js Architectures',
-      'Node.js & Python Backend API Systems',
-      'Modern Database Design & Integration',
-    ],
-  },
-  {
-    icon: MousePointer2,
-    title: 'UI/UX & System Design',
-    description:
-      'Creating consistent visual languages that improve user engagement and development speed.',
-    items: [
-      'Comprehensive Design Systems in Figma',
-      'User Journey Mapping & Prototyping',
-      'Accessibility-First Visual Design',
-    ],
-  },
-  {
-    icon: Building2,
-    title: 'Business & Enterprise',
-    description:
-      'Simplifying complex data workflows and internal tools for high-efficiency operations.',
-    items: [
-      'Custom ERP & CRM Dashboards',
-      'Internal Tooling & Workflow Automation',
-      'Data Visualization & Reporting',
-    ],
-  },
-  {
-    icon: Gauge,
-    title: 'Performance & Code Quality',
-    description:
-      'Optimizing existing applications for speed, security, and maintainability.',
-    items: [
-      'Web Vitals Optimization & SEO',
-      'Codebase Refactoring & Security Audits',
-      'CI/CD Pipelines & DevOps Setup',
-    ],
-  },
-  {
-    icon: Users,
-    title: 'Consulting & Leadership',
-    description:
-      'Guiding engineering teams and founders through technical hurdles and product strategy.',
-    items: [
-      'Product Roadmap & Technical Strategy',
-      'Tech-Stack Selection & Architecture Advice',
-      'Dev-Team Mentorship & Process Design',
-    ],
-  },
-]
+interface ServicesContentProps {
+  servicesData?: ServicesData | null
+  whyImageUrl?: string
+  whyImageAlt?: string
+}
 
-const processSteps = [
-  {
-    number: '01',
-    title: 'Discovery',
-    description: 'In-depth research and goal alignment to define project scope.',
-  },
-  {
-    number: '02',
-    title: 'Strategy',
-    description: 'Architecting solutions and mapping out the user journey.',
-  },
-  {
-    number: '03',
-    title: 'Development',
-    description: 'Design execution and high-performance coding phase.',
-  },
-  {
-    number: '04',
-    title: 'Iteration',
-    description: 'Continuous feedback loops and post-launch refinement.',
-  },
-]
+export default function ServicesContent({
+  servicesData,
+  whyImageUrl = 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80',
+  whyImageAlt = 'Laptop with technical work',
+}: ServicesContentProps) {
+  // Resolve content from CMS with fallbacks
+  const heroTitlePrefix = servicesData?.heroTitlePrefix ?? 'Expertise &'
+  const heroTitleHighlight = servicesData?.heroTitleHighlight ?? 'Services'
+  const heroSubtitle =
+    servicesData?.heroSubtitle ??
+    'Bridging the gap between high-fidelity design and high-performance engineering to build digital products that move the needle.'
 
-const whyWorkWithMe = [
-  {
-    title: 'Design-to-Code Efficiency',
-    description:
-      'Zero communication loss. I translate designs into pixel-perfect code myself, reducing overhead.',
-  },
-  {
-    title: 'Product-First Thinking',
-    description:
-      "I don't just build features; I focus on your business goals and user needs from day one.",
-  },
-  {
-    title: 'Modern Tech Stack',
-    description:
-      'Leveraging the latest stable technologies to ensure your product is future-proof and performant.',
-  },
-]
+  const servicesList = (servicesData?.servicesList?.length
+    ? servicesData.servicesList
+    : DEFAULT_SERVICES) as Array<{
+    icon?: string
+    title: string
+    description: string
+    items: string[]
+  }>
 
-export default function ServicesContent() {
+  const whySectionTitle = servicesData?.whySectionTitle ?? 'Why Work With Me?'
+  const whyPoints = (servicesData?.whyPoints?.length
+    ? servicesData.whyPoints
+    : DEFAULT_WHY_POINTS) as Array<{ title: string; description: string }>
+  const experienceBadgeValue = servicesData?.experienceBadgeValue ?? '10+'
+  const experienceBadgeLabel = servicesData?.experienceBadgeLabel ?? 'YEARS INDUSTRY EXP'
+
+  const processTitle = servicesData?.processTitle ?? 'The Process'
+  const processSubtitle =
+    servicesData?.processSubtitle ??
+    'A structured path from initial spark to final launch.'
+  const processSteps = (servicesData?.processSteps?.length
+    ? servicesData.processSteps
+    : DEFAULT_PROCESS_STEPS) as Array<{ number: string; title: string; description: string }>
+
+  const ctaHeadingMain = servicesData?.ctaHeadingMain ?? "Ready to build something"
+  const ctaHeadingHighlight = servicesData?.ctaHeadingHighlight ?? 'exceptional?'
+  const ctaSubtitle =
+    servicesData?.ctaSubtitle ??
+    "Whether you have a fully-formed idea or just the start of a concept, let's chat about how we can make it a reality."
+  const ctaPrimaryText = servicesData?.ctaPrimaryText ?? "Let's Work Together"
+  const ctaPrimaryLink = servicesData?.ctaPrimaryLink ?? '/contact'
+  const ctaSecondaryText = servicesData?.ctaSecondaryText ?? 'View My Portfolio'
+  const ctaSecondaryLink = servicesData?.ctaSecondaryLink ?? '/projects'
   const heroRef = useRef(null)
   const gridRef = useRef(null)
   const whyRef = useRef(null)
@@ -162,8 +173,8 @@ export default function ServicesContent() {
               animate={heroInView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...transition, delay: 0.1 }}
             >
-              Expertise &{' '}
-              <span className="text-accent">Services</span>
+              {heroTitlePrefix}{' '}
+              <span className="text-accent">{heroTitleHighlight}</span>
             </motion.h1>
             <motion.p
               className="text-white/90 text-base md:text-lg leading-relaxed"
@@ -171,8 +182,7 @@ export default function ServicesContent() {
               animate={heroInView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...transition, delay: 0.2 }}
             >
-              Bridging the gap between high-fidelity design and high-performance
-              engineering to build digital products that move the needle.
+              {heroSubtitle}
             </motion.p>
           </motion.div>
         </div>
@@ -181,9 +191,9 @@ export default function ServicesContent() {
       {/* Services Grid */}
       <section ref={gridRef} className="pb-16 md:pb-20 lg:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-            {services.map((service, index) => {
-              const Icon = service.icon
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-5">
+            {servicesList.map((service, index) => {
+              const Icon = ICON_MAP[service.icon || 'Code2'] ?? Code2
               return (
                 <motion.article
                   key={service.title}
@@ -207,8 +217,8 @@ export default function ServicesContent() {
                   <p className="text-white/80 text-sm md:text-base leading-relaxed mb-4">
                     {service.description}
                   </p>
-                  <ul className="space-y-2">
-                    {service.items.map((item) => (
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4">
+                    {(service.items || []).map((item) => (
                       <li
                         key={item}
                         className="flex items-start gap-2 text-white/90 text-sm"
@@ -226,7 +236,7 @@ export default function ServicesContent() {
       </section>
 
       {/* Why Work With Me */}
-      <section ref={whyRef} className="pb-16 md:pb-20 lg:pb-24">
+      <section ref={whyRef} className="pb-16 md:pb-20 lg:pb-24 mx-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div
@@ -241,10 +251,10 @@ export default function ServicesContent() {
                 animate={whyInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ ...transition, delay: 0.1 }}
               >
-                Why Work With Me?
+                {whySectionTitle}
               </motion.h2>
               <div className="space-y-8">
-                {whyWorkWithMe.map((item, index) => (
+                {whyPoints.map((item, index) => (
                   <motion.div
                     key={item.title}
                     initial={{ opacity: 0, x: -16 }}
@@ -276,8 +286,8 @@ export default function ServicesContent() {
                 transition={{ ...transition, delay: 0.2 }}
               >
                 <Image
-                  src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80"
-                  alt="Laptop with technical work"
+                  src={whyImageUrl}
+                  alt={whyImageAlt}
                   fill
                   className="object-cover transition-transform duration-500 hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -290,10 +300,10 @@ export default function ServicesContent() {
                 transition={{ ...transition, delay: 0.45 }}
               >
                 <span className="text-accent font-bold text-3xl block leading-none">
-                  10+
+                  {experienceBadgeValue}
                 </span>
                 <span className="text-white text-xs font-medium uppercase tracking-wider">
-                  YEARS INDUSTRY EXP
+                  {experienceBadgeLabel}
                 </span>
               </motion.div>
             </motion.div>
@@ -317,7 +327,7 @@ export default function ServicesContent() {
               animate={processInView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...transition, delay: 0.05 }}
             >
-              The Process
+              {processTitle}
             </motion.h2>
             <motion.p
               className="text-white/80 text-base md:text-lg max-w-xl mx-auto"
@@ -325,7 +335,7 @@ export default function ServicesContent() {
               animate={processInView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...transition, delay: 0.15 }}
             >
-              A structured path from initial spark to final launch.
+              {processSubtitle}
             </motion.p>
           </motion.div>
 
@@ -413,8 +423,8 @@ export default function ServicesContent() {
               animate={ctaInView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...transition, delay: 0.1 }}
             >
-              Ready to build something{' '}
-              <span className="text-accent">exceptional?</span>
+              {ctaHeadingMain}{' '}
+              <span className="text-accent">{ctaHeadingHighlight}</span>
             </motion.h2>
             <motion.p
               className="text-white/80 text-base md:text-lg mb-8"
@@ -422,8 +432,7 @@ export default function ServicesContent() {
               animate={ctaInView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...transition, delay: 0.2 }}
             >
-              Whether you have a fully-formed idea or just the start of a
-              concept, let&apos;s chat about how we can make it a reality.
+              {ctaSubtitle}
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
@@ -437,7 +446,13 @@ export default function ServicesContent() {
                 size="lg"
                 className="bg-accent hover:bg-accent/90 text-white rounded-lg px-6 md:px-8"
               >
-                <Link href="/contact">Let&apos;s Work Together</Link>
+                {ctaPrimaryLink?.startsWith('http') ? (
+                  <a href={ctaPrimaryLink} target="_blank" rel="noopener noreferrer">
+                    {ctaPrimaryText}
+                  </a>
+                ) : (
+                  <Link href={ctaPrimaryLink}>{ctaPrimaryText}</Link>
+                )}
               </Button>
               <Button
                 asChild
@@ -445,7 +460,13 @@ export default function ServicesContent() {
                 size="lg"
                 className="rounded-lg px-6 md:px-8 border-white/30 text-white hover:bg-white/10"
               >
-                <Link href="/projects">View My Portfolio</Link>
+                {ctaSecondaryLink?.startsWith('http') ? (
+                  <a href={ctaSecondaryLink} target="_blank" rel="noopener noreferrer">
+                    {ctaSecondaryText}
+                  </a>
+                ) : (
+                  <Link href={ctaSecondaryLink}>{ctaSecondaryText}</Link>
+                )}
               </Button>
             </motion.div>
           </motion.div>
