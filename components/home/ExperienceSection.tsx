@@ -415,11 +415,11 @@ const ExperienceSection = () => {
         {/* Experience Cards - Clean Vertical Layout with Path */}
         <div
           ref={timelineRef}
-          className="relative w-full max-w-5xl mx-auto md:right-4 md:ml-auto md:mr-4 pl-[10rem] sm:pl-28 md:pl-20 lg:pl-24 min-w-0"
+          className="relative w-full max-w-5xl mx-auto md:right-4 md:ml-auto md:mr-4 pl-0 sm:pl-20 md:pl-20 lg:pl-24 min-w-0"
         >
-          {/* Vertical Path Line - aligned to first & last experience dots */}
+          {/* Vertical Path Line - aligned to first & last experience dots; hidden on smallest screens */}
           {lineStyle && (
-            <div className="pointer-events-none gap-4 md:gap-6 lg:gap-8 absolute left-1 -inset-y-3 flex justify-center">
+            <div className="pointer-events-none absolute left-1 -inset-y-3 hidden sm:block">
               {/* Glow behind line */}
               <div
                 className="absolute w-1 h-full rounded-full bg-accent/25 blur-sm"
@@ -468,7 +468,7 @@ const ExperienceSection = () => {
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 className="group bg-card rounded-xl mr-2 sm:mr-4 md:mr-10 border border-white/10 p-4 sm:p-6 md:p-8 hover:border-accent/50 transition-all duration-300 relative min-w-0"
               >
-                {/* Path Dot with Date - side by side block */}
+                {/* Path Dot with Date - mobile: inside card; md+: absolute left */}
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
@@ -479,27 +479,47 @@ const ExperienceSection = () => {
                     type: "spring",
                     stiffness: 200,
                   }}
-                  className="absolute -left-16 sm:-left-18 md:-left-20 lg:-left-[22.5%] top-8 sm:top-10 z-10 flex flex-row items-center gap-2 sm:gap-4"
+                  className="flex flex-row items-center gap-2 mb-3 md:hidden"
                 >
-                  {/* Date text beside dot */}
-                  <motion.span
-                    initial={{ opacity: 0, x: -6 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 + 0.5 }}
-                    className="text-accent w-[72px] sm:w-[85px] text-[11px] sm:text-xs font-medium whitespace-nowrap"
-                  >
-                    {exp.dates}
-                  </motion.span>
-                  {/* Main dot */}
+                  <span className="text-accent text-xs font-medium">{exp.dates}</span>
                   <div
-                    className="relative flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 bg-accent rounded-full border-2 sm:border-4 border-background shadow-lg"
+                    className="relative flex-shrink-0 w-4 h-4 bg-accent rounded-full border-2 border-background shadow-lg"
                     style={{
                       boxShadow:
                         "0 0 12px rgba(143, 6, 6, 0.8), 0 0 24px rgba(143, 6, 6, 0.4)",
                     }}
                   >
-                    {/* Inner highlight */}
+                    <div className="absolute inset-1 bg-accent/60 rounded-full" />
+                  </div>
+                </motion.div>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.4,
+                    delay: index * 0.1 + 0.3,
+                    type: "spring",
+                    stiffness: 200,
+                  }}
+                  className="hidden md:flex absolute -left-20 lg:-left-[22.5%] top-8 lg:top-10 z-10 flex-row items-center gap-2 lg:gap-4"
+                >
+                  <motion.span
+                    initial={{ opacity: 0, x: -6 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 + 0.5 }}
+                    className="text-accent w-[85px] text-xs font-medium whitespace-nowrap"
+                  >
+                    {exp.dates}
+                  </motion.span>
+                  <div
+                    className="relative flex-shrink-0 w-5 h-5 bg-accent rounded-full border-4 border-background shadow-lg"
+                    style={{
+                      boxShadow:
+                        "0 0 12px rgba(143, 6, 6, 0.8), 0 0 24px rgba(143, 6, 6, 0.4)",
+                    }}
+                  >
                     <div className="absolute inset-1 bg-accent/60 rounded-full" />
                   </div>
                 </motion.div>

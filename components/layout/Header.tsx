@@ -1,16 +1,20 @@
 'use client'
 
 import Link from 'next/link'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { Menu, X, ChevronDown } from 'lucide-react'
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isLanguageOpen, setIsLanguageOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
+
+  useEffect(() => setMounted(true), [])
 
   const navItems = [
     { name: 'Home', href: '/' },
@@ -143,38 +147,40 @@ const Header = () => {
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
-              <X className="w-6 h-6" />
+              <X className="w-6 h-6 text-white" />
             ) : (
-              <Menu className="w-6 h-6" />
+              <Menu className="w-6 h-6 text-white" />
             )}
           </motion.button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 transition-all duration-300 ease-in-out bg-black/60 backdrop-blur-sm z-40 md:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-            
-            {/* Menu Panel */}
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
-              className="fixed top-14 sm:top-16 right-0 bottom-0 w-[280px] sm:w-64 bg-black border-l border-white/10 md:hidden shadow-2xl"
-            >
-              <nav className="flex flex-col p-4 sm:p-6 gap-3 z-40 sm:gap-4">
-                {navItems.map((item, index) => {
+      {/* Mobile Menu - portaled to body so header blur doesn't make it transparent */}
+      {mounted && createPortal(
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <>
+              {/* Backdrop - subtle dimming, mobile only */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 z-[100] md:hidden"
+                style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              />
+              {/* Menu Panel - solid black, mobile only */}
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
+                className="fixed top-14 sm:top-16 right-0 bottom-0 w-full h-[280px] rounded-lg sm:w-64 z-[101] bg-black/80 backdrop-blur-sm border-l border-white/10 md:hidden shadow-2xl"
+                // style={{ backgroundColor: '#000' }}
+              >
+                <nav className="flex flex-col p-4 sm:p-6 gap-3 sm:gap-4 items-center justify-center">
+                  {navItems.map((item, index) => {
                   const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
                   return (
                     <motion.div
@@ -213,30 +219,31 @@ const Header = () => {
                       </Link>
                     </motion.div>
                   )
-                })}
-                
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: navItems.length * 0.1 }}
-                  className="pt-3 sm:pt-4 flex items-center justify-center gap-3"
-                >
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    asChild
-                    className="inline-flex items-center justify-center h-9 sm:h-10 px-5 sm:px-6 rounded-md bg-accent hover:bg-accent/90 border-0 text-white text-xs sm:text-sm font-medium uppercase tracking-wide"
+                  })}
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: navItems.length * 0.1 }}
+                    className="pt-3 sm:pt-4 flex items-center justify-center gap-3"
                   >
-                    <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                      Contact
-                    </Link>
-                  </Button>
-                </motion.div>
-              </nav>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      asChild
+                      className="inline-flex items-center justify-center h-9 sm:h-10 px-5 sm:px-6 rounded-md bg-card hover:bg-accent/90 border-0 text-white text-xs sm:text-sm font-medium uppercase tracking-wide"
+                    >
+                      <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                        Contact
+                      </Link>
+                    </Button>
+                  </motion.div>
+                </nav>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </motion.header>
   )
 }

@@ -58,8 +58,6 @@ export default function FeaturedProjectsSection({
 }: FeaturedProjectsSectionProps) {
   if (!projects || projects.length === 0) return null
 
-  console.log("projects...",projects);
-
   return (
     <section className="pt-6 sm:pt-8 md:pt-12 pb-12 sm:pb-16 md:pb-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">

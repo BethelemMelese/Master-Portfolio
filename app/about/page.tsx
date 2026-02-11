@@ -13,13 +13,6 @@ export default async function About() {
   try {
     // Fetch data - CDN is already disabled in client config
     aboutData = await client.fetch(aboutQuery)
-    
-    // Debug: Log the fetched data (remove in production)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('About Data:', JSON.stringify(aboutData, null, 2))
-      console.log('Tech Categories:', aboutData?.techCategories)
-      console.log('Work Principles:', aboutData?.workPrinciples)
-    }
   } catch (error) {
     console.error('Error fetching about data:', error)
   }
