@@ -78,7 +78,7 @@ const Header = () => {
           {/* Right Side Actions */}
           <div className="hidden md:flex items-center gap-2 z-10">
             {/* Language Selector */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
@@ -114,9 +114,9 @@ const Header = () => {
                   </>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </motion.div> */}
 
-            {/* Contact Us Button */}
+            {/* Contact Me Button */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -126,9 +126,9 @@ const Header = () => {
                 variant="outline"
                 size="sm"
                 asChild
-                className="inline-flex items-center justify-center h-8 md:h-9 px-3 md:px-4 rounded-lg bg-card hover:bg-card/80 border-0 text-gray-300 hover:text-white text-xs md:text-sm font-medium transition-colors"
+                className="inline-flex items-center justify-center h-8 md:h-9 px-3 md:px-4 rounded-lg bg-accent hover:bg-accent/80 border-0 text-gray-300 hover:text-white text-xs md:text-sm font-medium transition-colors"
               >
-                <Link href="/contact">Contact Us</Link>
+                <Link href="/contact">Contact Me</Link>
               </Button>
             </motion.div>
           </div>
@@ -171,7 +171,7 @@ const Header = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
-              className="fixed top-14 sm:top-16 right-0 bottom-0 w-[280px] sm:w-64 bg-black/60 border-l border-white/10 md:hidden shadow-2xl"
+              className="fixed top-14 sm:top-16 right-0 bottom-0 w-[280px] sm:w-64 bg-black border-l border-white/10 md:hidden shadow-2xl"
             >
               <nav className="flex flex-col p-4 sm:p-6 gap-3 z-40 sm:gap-4">
                 {navItems.map((item, index) => {

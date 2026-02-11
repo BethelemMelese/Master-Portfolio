@@ -4,6 +4,7 @@ import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import PageLoader from '@/components/layout/PageLoader'
+import BackToTopButton from '@/components/layout/BackToTopButton'
 
 const poppins = Poppins({ 
   subsets: ['latin'],
@@ -33,8 +34,11 @@ export default function RootLayout({
       <body className={`${poppins.className} ${inter.variable} text-text-primary min-h-screen`}>
         <PageLoader />
         <Header />
-        <main className="pt-16 md:pt-20">{children}</main>
+        <main id="top" className="pt-16 md:pt-20">
+          {children}
+        </main>
         <Footer />
+        <BackToTopButton />
       </body>
     </html>
   )

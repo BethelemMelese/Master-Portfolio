@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --accent-color: #8f0606;
+    --scrollbar-track: rgba(255, 255, 255, 0.04);
+    --scrollbar-thumb: var(--accent-color);
+    --scrollbar-thumb-hover: #b50d0d;
+  }
+
   body {
     @apply text-text-primary;
     font-family: 'Poppins', sans-serif;
@@ -20,4 +27,54 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .scrollbar-accent {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+
+  .scrollbar-accent::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .scrollbar-accent::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 999px;
+  }
+
+  .scrollbar-accent::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--accent-color), #d11c1c);
+    border-radius: 999px;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .scrollbar-accent::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--scrollbar-thumb-hover), #f04747);
+  }
+}
+
+*,
+*::before,
+*::after {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: 0.65rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--accent-color), #d11c1c);
+  border-radius: 999px;
+  border: 2px solid rgba(0, 0, 0, 0.45);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--scrollbar-thumb-hover), #f04747);
 }
