@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.sanity.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
 }
