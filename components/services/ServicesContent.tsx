@@ -120,7 +120,7 @@ export default function ServicesContent({
   const whyPoints = (servicesData?.whyPoints?.length
     ? servicesData.whyPoints
     : DEFAULT_WHY_POINTS) as Array<{ title: string; description: string }>
-  const experienceBadgeValue = servicesData?.experienceBadgeValue ?? '10+'
+  const experienceBadgeValue = servicesData?.experienceBadgeValue ?? '5+'
   const experienceBadgeLabel = servicesData?.experienceBadgeLabel ?? 'YEARS INDUSTRY EXP'
 
   const processTitle = servicesData?.processTitle ?? 'The Process'

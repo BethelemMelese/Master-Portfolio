@@ -3,15 +3,36 @@ import { client } from '@/lib/sanity/client'
 import { projectQuery, projectsQuery } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+import { siteConfig, getAbsoluteUrl } from '@/lib/seo'
 
 export const revalidate = process.env.NODE_ENV === 'development' ? 0 : 60
 export const dynamic = 'force-dynamic'
 
-export default async function ProjectDetail({
-  params,
-}: {
-  params: { slug: string }
-}) {
+type Props = { params: { slug: string } }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const project = await client.fetch(projectQuery, { slug: params.slug })
+  if (!project?.title) return { title: 'Project' }
+  const description =
+    typeof project.shortDescription === 'string'
+      ? project.shortDescription
+      : 'Project case study and details.'
+  const title = project.title
+  const url = getAbsoluteUrl(`/projects/${params.slug}`)
+  return {
+    title,
+    description,
+    openGraph: {
+      title: `${title} | ${siteConfig.name}`,
+      description,
+      url,
+      type: 'article',
+    },
+  }
+}
+
+export default async function ProjectDetail({ params }: Props) {
   let project = null
   
   try {

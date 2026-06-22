@@ -2,14 +2,20 @@ import ServicesContent from '@/components/services/ServicesContent'
 import { client } from '@/lib/sanity/client'
 import { servicesQuery } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
+import type { Metadata } from 'next'
 
 export const revalidate = process.env.NODE_ENV === 'development' ? 0 : 60
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
-  title: 'Services | Expertise & Services',
+export const metadata: Metadata = {
+  title: 'Services',
   description:
     'Bridging the gap between high-fidelity design and high-performance engineering. Full-stack development, UI/UX, consulting, and more.',
+  openGraph: {
+    title: 'Services | Betisha',
+    description:
+      'Full-stack development, UI/UX, consulting, and design-to-code expertise.',
+  },
 }
 
 const DEFAULT_WHY_IMAGE =

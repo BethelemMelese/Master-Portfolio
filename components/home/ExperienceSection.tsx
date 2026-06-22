@@ -407,7 +407,7 @@ const ExperienceSection = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className=" text-text-secondary-light text-lg md:text-xl max-w-3xl"
           >
-            10+ Years of crafting digital products, leading design teams, and
+            5+ Years of crafting digital products, leading design teams, and
             solving complex problems for global brands.
           </motion.p>
         </motion.div>

@@ -123,8 +123,8 @@ export default defineType({
       name: 'experienceBadgeValue',
       title: 'Experience Badge Value',
       type: 'string',
-      description: 'e.g. "10+"',
-      initialValue: '10+',
+      description: 'e.g. "5+"',
+      initialValue: '5+',
     }),
     defineField({
       name: 'experienceBadgeLabel',

@@ -2,10 +2,22 @@ import AboutContent from '@/components/about/AboutContent'
 import { client } from '@/lib/sanity/client'
 import { aboutQuery } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
+import type { Metadata } from 'next'
 
 // Revalidate settings - 0 means always fetch fresh data
 export const revalidate = process.env.NODE_ENV === 'development' ? 0 : 60
 export const dynamic = 'force-dynamic' // Force dynamic rendering to always get fresh data
+
+export const metadata: Metadata = {
+  title: 'About',
+  description:
+    'Learn more about my background, skills, and approach to design and development. Professional experience and focus areas.',
+  openGraph: {
+    title: 'About | Betisha',
+    description:
+      'Learn more about my background, skills, and approach to design and development.',
+  },
+}
 
 export default async function About() {
   let aboutData = null
